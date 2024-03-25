@@ -47,6 +47,10 @@ add_dependencies(Eggventure copy_assets)
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 
+target_sources(${PROJECT_NAME} PRIVATE game.cpp
+PRIVATE assets.cpp
+ "egg.cpp")
+
 # Web Configurations
 if (${PLATFORM} STREQUAL "Web")
     # Tell Emscripten to build an example.html file.

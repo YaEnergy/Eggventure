@@ -2,25 +2,28 @@
 //
 
 #include "Eggventure.h"
+#include "game.h"
 #include "raylib.h"
+#include "assets.h"
 
 const char* WINDOW_TITLE = "Polugo n donute's Eggventure!";
 
 const int DESIGN_WIDTH = 800;
 const int DESIGN_HEIGHT = 480;
 
-Texture2D test;
-
 int main()
 {
-	std::cout << "Polugo n donute's Eggventure!" << std::endl;
+	std::cout << "Polugo n donute's Eggventure! START" << std::endl;
 
 	// Init
 	InitWindow(DESIGN_WIDTH, DESIGN_HEIGHT, WINDOW_TITLE);
 	InitAudioDevice();
 
-	test = LoadTexture("assets/egg/Egg_SpikeyStripes.png");
+	SetTargetFPS(120);
+	SetWindowState(FLAG_MSAA_4X_HINT | FLAG_WINDOW_ALWAYS_RUN);
 
+	LoadAssets();
+	
 	//TODO: Emscripten for web builds modifications
 
 	//Main loop
@@ -29,24 +32,28 @@ int main()
 		UpdateDrawFrame();
 	}
 
-	UnloadTexture(test);
-
 	//Deinit
 	CloseWindow();
 	CloseAudioDevice();
 
+	UnloadAssets();
+
 	return 0;
 }
 
-static void UpdateDrawFrame()
+void UpdateDrawFrame()
 {
-	BeginDrawing();
+	GameUpdate();
+}
 
-	ClearBackground(WHITE);
+float GetScreenDesignRatioMultiplier()
+{
+	int screenWidth = GetScreenWidth();
+	int screenHeight = GetScreenHeight();
 
-	DrawText("This is a text", 0, 0, 36, BLACK);
+	float widthDesignRatio = (float)screenWidth / DESIGN_WIDTH;
+	float heightDesignRatio = (float)screenHeight / DESIGN_HEIGHT;
 
-	DrawTexture(test, 0, 0, WHITE);
-
-	EndDrawing();
+	//Return correct screen design ratio multiplier
+	return widthDesignRatio < heightDesignRatio ? widthDesignRatio : heightDesignRatio;
 }
