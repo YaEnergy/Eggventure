@@ -9,5 +9,3 @@ enum GameState
 };
 
 void GameUpdate();
-
-void IntroDraw();

@@ -1,19 +1,39 @@
-#include "game.h"
 #include "raylib.h"
+#include "renderer.h"
+#include "egg.h"
+#include "game.h"
+#include "eggCreator.h"
+
 #include "assets.h"
 #include "Eggventure.h"
 
 GameState State = Intro;
+
+void IntroUpdate();
+void IntroDraw();
 
 void GameUpdate()
 {
 	switch (State)
 	{
 		case Intro:
+			IntroUpdate();
 			IntroDraw();
+			break;
+		case EggCreation:
+			EggCreatorUpdate();
+			EggCreatorDraw();
 			break;
 		default:
 			break;
+	}
+}
+
+void IntroUpdate()
+{
+	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+	{
+		State = EggCreation;
 	}
 }
 
@@ -24,12 +44,13 @@ void IntroDraw()
 	int screenWidth = GetScreenWidth();
 	int screenHeight = GetScreenHeight();
 
+	//TODO: add flipping polygon donut sprite
 	double time = GetTime();
 
 	float ratioMultiplier = GetScreenDesignRatioMultiplier();
 
 	//Background
-	Rectangle screenRect = { 0, 0, screenWidth, screenHeight };
+	Rectangle screenRect = { 0, 0, (float)screenWidth, (float)screenHeight };
 	DrawRectangleGradientEx(screenRect, RED, PINK, PINK, RED);
 
 	//Title
@@ -41,17 +62,18 @@ void IntroDraw()
 	//Introduction text
 	float introductionFontSize = 28 * ratioMultiplier;
 
-	float introductionY = (float)screenHeight / 2 - introductionFontSize * 4;
+	float introductionY = (float)screenHeight / 2 - introductionFontSize * 4.5F;
 
 	//TODO: there has to be a better way for doing this...
 	const char* introductionText1 = "Polugo n donute has forgor";
 	const char* introductionText2 = "to make hideable eggs";
-	const char* introductionText3 = "your help making every";
-	const char* introductionText4 = "single one of them!!!:)";
-	const char* introductionText5 = "afterwards he will hide";
-	const char* introductionText6 = "them and you'll participate";
-	const char* introductionText7 = "in their event!! :3";
-	const char* introductionText8 = "(watch out for bunnies!)";
+	const char* introductionText3 = "for their event and needs";
+	const char* introductionText4 = "your help making every";
+	const char* introductionText5 = "single one of them!!!:)";
+	const char* introductionText6 = "afterwards he will hide";
+	const char* introductionText7 = "them and you'll participate";
+	const char* introductionText8 = "in their event!! :3";
+	const char* introductionText9 = "(watch out for bunnies!)";
 
 	DrawTextEx(MainFont, introductionText1, { 10 * ratioMultiplier, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
 
@@ -82,6 +104,10 @@ void IntroDraw()
 	introductionY += introductionFontSize;
 
 	DrawTextEx(MainFont, introductionText8, { 10 * ratioMultiplier, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
+
+	introductionY += introductionFontSize;
+
+	DrawTextEx(MainFont, introductionText9, { 10 * ratioMultiplier, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
 
 	//Start text
 	const char* startText = "Click to start!";

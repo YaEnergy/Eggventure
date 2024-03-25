@@ -4,6 +4,8 @@
 extern Font MainFont;
 //extern Font DiscordChannelFont;
 
+extern Texture2D IconButton_Background;
+
 //Discord channel backgrounds
 
 //Eggs

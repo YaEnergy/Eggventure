@@ -1,8 +1,12 @@
 #pragma once
 
+#ifndef RAYLIB_H
+	#include "raylib.h"
+#endif
+
 enum EggDesign
 {
-	None,
+	NoEggDesign,
 	SpikyStripes,
 	WavyStripes,
 	StraightStripes
@@ -10,7 +14,7 @@ enum EggDesign
 
 enum EggMark
 {
-	None,
+	NoEggMark,
 	CatFace,
 	Star,
 	Circle
@@ -19,12 +23,10 @@ enum EggMark
 struct Egg
 {
 	Color baseColor;
-
 	EggDesign design;
 	Color designColor;
-
 	EggMark mark;
 	Color markColor;
 };
 
-void DrawEgg(Egg egg, Vector2 position, float rotation, float scale);
+void DrawEgg(Egg egg, Vector2 position, Vector2 origin, float rotationDeg, Vector2 scale, Color tint);

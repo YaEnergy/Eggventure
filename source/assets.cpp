@@ -5,6 +5,8 @@
 Font MainFont = { 0 };
 //Font DiscordChannelFont = { 0 };
 
+Texture2D IconButton_Background = { 0 };
+
 //Discord channels
 
 //Egg
@@ -25,17 +27,19 @@ Texture2D EggMark_Circle = { 0 };
 void LoadAssets()
 {
 	//Main
-	MainFont = LoadFont("assets/Qikki-Reg/Qarmic_sans_Abridged.ttf");
+	MainFont = LoadFontEx("assets/Qikki-Reg/Qarmic_sans_Abridged.ttf", 128, NULL, NULL);
+
+	IconButton_Background = LoadTexture("assets/textures/IconButton_Background.png");
 
 	//Eggs
 	//Base
-	EggBase_Outline = LoadTexture("assets/egg/Egg_Shell.png");
-	EggBase_Color = LoadTexture("assets/egg/Egg_BaseColor.png");
+	EggBase_Outline = LoadTexture("assets/textures/egg/Egg_Shell.png");
+	EggBase_Color = LoadTexture("assets/textures/egg/Egg_BaseColor.png");
 
 	//Design
-	EggDesign_SpikyStripes = LoadTexture("assets/egg/Egg_SpikeyStripes.png");
-	EggDesign_WavyStripes = LoadTexture("assets/egg/Egg_WavyStripes.png");
-	EggDesign_StraightStripes = LoadTexture("assets/egg/Egg_Stripes.png");
+	EggDesign_SpikyStripes = LoadTexture("assets/textures/egg/Egg_SpikeyStripes.png");
+	EggDesign_WavyStripes = LoadTexture("assets/textures/egg/Egg_WavyStripes.png");
+	EggDesign_StraightStripes = LoadTexture("assets/textures/egg/Egg_Stripes.png");
 
 	//Marks
 	EggMark_CatFace = LoadTexture("assets/egg/Egg_Mark_CatFace.png");
