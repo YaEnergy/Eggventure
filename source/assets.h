@@ -3,6 +3,7 @@
 //Main
 extern Font MainFont;
 //extern Font DiscordChannelFont;
+extern Texture2D PolygonDonutTexture;
 
 extern Texture2D IconButton_Background;
 extern NPatchInfo IconButton_Background_NPatch;

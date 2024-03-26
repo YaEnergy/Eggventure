@@ -14,7 +14,10 @@ Camera2D MainCamera = { {0, 0}, {0, 0}, 0, 1 };
 GameState State = Intro;
 TextButton startButton = TextButton();
 
-float eggHidingCutsceneTime = 0.0F;
+float deltaRotatePolygonDonutTime = 0.0f;
+float polygonDonutRotateDeg = 20.0f;
+
+float eggHidingCutsceneTime = 0.0f;
 
 void IntroInit();
 void IntroUpdate();
@@ -71,6 +74,7 @@ void IntroInit()
 	startButton.Text = "Play";
 	startButton.Background = IconButton_Background;
 	startButton.BackgroundNPatchInfo = IconButton_Background_NPatch;
+	deltaRotatePolygonDonutTime = 0.0f;
 }
 
 void IntroUpdate()
@@ -94,17 +98,25 @@ void IntroUpdate()
 	{
 		SetGameState(EggCreation);
 	}
+
+	//rotating polygon donut
+	deltaRotatePolygonDonutTime += GetFrameTime();
+
+	if (deltaRotatePolygonDonutTime >= 0.5f)
+	{
+		deltaRotatePolygonDonutTime = 0.0f;
+		polygonDonutRotateDeg = -polygonDonutRotateDeg;
+	}
 }
 
 void IntroDraw()
 {
 	BeginDrawing();
 
+	ClearBackground(BLACK);
+
 	int screenWidth = GetScreenWidth();
 	int screenHeight = GetScreenHeight();
-
-	//TODO: add flipping polygon donut sprite
-	double time = GetTime();
 
 	float ratioMultiplier = GetScreenDesignRatioMultiplier();
 
@@ -118,12 +130,13 @@ void IntroDraw()
 	Vector2 titleSize = MeasureTextEx(MainFont, titleText, titleFontSize, titleFontSize / 10);
 	DrawTextEx(MainFont, titleText, { (screenWidth - titleSize.x) / 2, titleFontSize / 2 }, titleFontSize, titleFontSize / 10, WHITE);
 
-	//Introduction text
+#pragma region Introduction text
 	float introductionFontSize = 28 * ratioMultiplier;
 
-	float introductionY = (float)screenHeight / 2 - introductionFontSize * 4.5F;
+	float introductionX = 30 * ratioMultiplier;
+	float introductionY = (float)screenHeight / 2 - introductionFontSize * 4.5f;
 
-	//TODO: there has to be a better way for doing this...
+	//TODO: there has to be a better way for doing this... eh too lazy
 	const char* introductionText1 = "Polugo n donute has forgor";
 	const char* introductionText2 = "to make hideable eggs";
 	const char* introductionText3 = "for their event and needs";
@@ -134,51 +147,68 @@ void IntroDraw()
 	const char* introductionText8 = "in their event!! :3";
 	const char* introductionText9 = "(watch out for bunnies!)";
 
-	DrawTextEx(MainFont, introductionText1, { 10 * ratioMultiplier, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
+	DrawTextEx(MainFont, introductionText1, { introductionX, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
 
 	introductionY += introductionFontSize;
 
-	DrawTextEx(MainFont, introductionText2, { 10 * ratioMultiplier, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
+	DrawTextEx(MainFont, introductionText2, { introductionX, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
 
 	introductionY += introductionFontSize;
 
-	DrawTextEx(MainFont, introductionText3, { 10 * ratioMultiplier, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
+	DrawTextEx(MainFont, introductionText3, { introductionX, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
 
 	introductionY += introductionFontSize;
 
-	DrawTextEx(MainFont, introductionText4, { 10 * ratioMultiplier, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
+	DrawTextEx(MainFont, introductionText4, { introductionX, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
 
 	introductionY += introductionFontSize;
 
-	DrawTextEx(MainFont, introductionText5, { 10 * ratioMultiplier, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
+	DrawTextEx(MainFont, introductionText5, { introductionX, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
 
 	introductionY += introductionFontSize;
 
-	DrawTextEx(MainFont, introductionText6, { 10 * ratioMultiplier, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
+	DrawTextEx(MainFont, introductionText6, { introductionX, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
 
 	introductionY += introductionFontSize;
 
-	DrawTextEx(MainFont, introductionText7, { 10 * ratioMultiplier, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
+	DrawTextEx(MainFont, introductionText7, { introductionX, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
 
 	introductionY += introductionFontSize;
 
-	DrawTextEx(MainFont, introductionText8, { 10 * ratioMultiplier, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
+	DrawTextEx(MainFont, introductionText8, { introductionX, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
 
 	introductionY += introductionFontSize;
 
-	DrawTextEx(MainFont, introductionText9, { 10 * ratioMultiplier, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
+	DrawTextEx(MainFont, introductionText9, { introductionX, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
 
+
+#pragma endregion
+
+	//Start button
 	startButton.Draw();
+
+	DrawTexture(PolygonDonutTexture, { screenWidth - PolygonDonutTexture.width / 2.0f - 120 * ratioMultiplier, screenHeight / 2.0f }, { PolygonDonutTexture.width / 2.0f, PolygonDonutTexture.height / 2.0f }, polygonDonutRotateDeg, { 1.0f, 1.0f }, WHITE, false, false);
 
 	EndDrawing();
 }
 
 void HidingUpdate()
 {
-	eggHidingCutsceneTime += GetFrameTime();
+	float deltaTime = GetFrameTime();
+
+	//rotating polygon donut
+	deltaRotatePolygonDonutTime += deltaTime;
+
+	if (deltaRotatePolygonDonutTime >= 0.5f)
+	{
+		deltaRotatePolygonDonutTime = 0.0f;
+		polygonDonutRotateDeg = -polygonDonutRotateDeg;
+	}
+
+	eggHidingCutsceneTime += deltaTime;
 
 	//Cutscene ends after x seconds
-	if (eggHidingCutsceneTime >= 3.0F)
+	if (eggHidingCutsceneTime >= 5.0F)
 		SetGameState(EggHunt);
 }
 
@@ -186,23 +216,33 @@ void HidingDraw()
 {
 	BeginDrawing();
 
+	ClearBackground(BLACK);
+
 	int screenWidth = GetScreenWidth();
 	int screenHeight = GetScreenHeight();
-
-	//TODO: add flipping polygon donut sprite
-	double time = GetTime();
 
 	float ratioMultiplier = GetScreenDesignRatioMultiplier();
 
 	//Background
 	Rectangle screenRect = { 0, 0, (float)screenWidth, (float)screenHeight };
-	DrawRectangleGradientEx(screenRect, SKYBLUE, BLUE, BLUE, SKYBLUE);
 
-	//Title cutscene
-	const char* titleText = "Hiding eggs...";
+	if (eggHidingCutsceneTime < 3.0f)
+	{
+		DrawRectangleGradientEx(screenRect, SKYBLUE, BLUE, BLUE, SKYBLUE);
+	}
+	else
+	{
+		DrawRectangleGradientEx(screenRect, GREEN, DARKGREEN, DARKGREEN, GREEN);
+	}
+
+	//Cutscene title
+	const char* titleText = eggHidingCutsceneTime < 3.0f ? "Hiding eggs..." : "Go find the eggs!";
 	float titleFontSize = 56 * ratioMultiplier;
 	Vector2 titleSize = MeasureTextEx(MainFont, titleText, titleFontSize, titleFontSize / 10);
 	DrawTextEx(MainFont, titleText, { (screenWidth - titleSize.x) / 2, titleFontSize }, titleFontSize, titleFontSize / 10, WHITE);
+
+	//Polygon donut
+	DrawTexture(PolygonDonutTexture, { screenWidth / 2.0f, screenHeight / 2.0f + titleFontSize + 10 * ratioMultiplier }, { PolygonDonutTexture.width / 2.0f, PolygonDonutTexture.height / 2.0f }, polygonDonutRotateDeg, { 1.0f, 1.0f }, WHITE, false, false);
 
 	EndDrawing();
 }

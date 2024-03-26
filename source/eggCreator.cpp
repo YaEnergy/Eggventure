@@ -30,7 +30,6 @@ void EggCreatorUpdate()
 	float benchHeight = 30 * ratioMultiplier;
 	float eggEditorHeight = 150 * ratioMultiplier;
 
-	nextButton.Text = eggIndex == NUM_EGGS - 1 ? "Finish" : "Next";
 	nextButton.FontSize = 48 * ratioMultiplier;
 	nextButton.Spacing = 4.8F * ratioMultiplier;
 	nextButton.Padding = 8.0F * ratioMultiplier;
@@ -43,10 +42,18 @@ void EggCreatorUpdate()
 	{
 		std::cout << "Next egg" << std::endl;
 		eggIndex++;
+
+		if (eggIndex == NUM_EGGS - 1)
+		{
+			nextButton.Text = "Finish";
+
+			nextButton.FitText();
+			nextButton.MoveTo({ screenWidth - nextButton.Rect.width - 30 * ratioMultiplier, screenHeight - benchHeight - eggEditorHeight - nextButton.Rect.height });
+		}
 	}
 	else if (nextButton.Released && eggIndex == NUM_EGGS - 1)
 	{
-		std::cout << "State: EggHiding" << std::endl;
+		std::cout << "Finished" << std::endl;
 		SetGameState(EggHiding);
 	}
 
@@ -55,6 +62,8 @@ void EggCreatorUpdate()
 void EggCreatorDraw()
 {
 	BeginDrawing();
+
+	ClearBackground(BLACK);
 
 	int screenWidth = GetScreenWidth();
 	int screenHeight = GetScreenHeight();
