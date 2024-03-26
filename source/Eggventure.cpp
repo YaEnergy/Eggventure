@@ -11,6 +11,16 @@ const char* WINDOW_TITLE = "Polugo n donute's Eggventure!";
 const int DESIGN_WIDTH = 800;
 const int DESIGN_HEIGHT = 480;
 
+#ifdef WIN32RELEASE
+
+//I love dumb work arounds! (me no like console window on windows...)
+int WinMain()
+{
+	return main();
+}
+#endif // RELEASE
+
+
 int main()
 {
 	std::cout << "Polugo n donute's Eggventure! START" << std::endl;

@@ -7,6 +7,11 @@
 #include "raylib.h"
 // TODO: Reference additional headers your program requires here.
 
+#ifdef WIN32RELEASE
+	int main();
+#endif // RELEASE
+
+
 void UpdateDrawFrame();
 
 float GetScreenDesignRatioMultiplier();
