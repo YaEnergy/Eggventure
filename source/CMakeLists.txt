@@ -47,13 +47,20 @@ add_dependencies(Eggventure copy_assets)
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 
+
+# Add source files (neccessary for linking)
 target_sources(${PROJECT_NAME} PRIVATE
     "game.cpp"
     "assets.cpp"
     "renderer.cpp"
     "egg.cpp"
- "eggCreator.cpp" 
- "graphics/TransitionScreen.cpp" "elements/Button.cpp" "elements/TextButton.cpp")
+    "eggCreator.cpp" 
+    "graphics/TransitionScreen.cpp" 
+    "elements/Button.cpp" 
+    "elements/TextButton.cpp" 
+    "elements/UIUtils.cpp" 
+    "EggStatebox.cpp"
+)
 
 # Web Configurations
 if (${PLATFORM} STREQUAL "Web")

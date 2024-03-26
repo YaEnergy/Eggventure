@@ -36,7 +36,7 @@ void TextButton::Draw()
 
 	float textX = 0;
 
-	switch (HorizontalAlignment)
+	switch (TextHorizontalAlignment)
 	{
 		case Left:
 			textX = Padding;
@@ -51,7 +51,7 @@ void TextButton::Draw()
 
 	float textY = 0;
 
-	switch (VerticalAlignment)
+	switch (TextVerticalAlignment)
 	{
 		case Top:
 			textY = Padding;

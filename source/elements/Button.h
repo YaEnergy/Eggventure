@@ -14,7 +14,7 @@ class Button
 		bool Released = false;
 		bool Down = false;
 
-		void Update(Camera2D camera);
+		virtual void Update(Camera2D camera);
 
 		bool IsHovered(Camera2D camera) const;
 		bool IsReleased(Camera2D camera) const;

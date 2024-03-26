@@ -2,20 +2,7 @@
 
 #include "raylib.h"
 #include "Button.h"
-
-enum TextHorizontalAlignment
-{
-	Left,
-	Right,
-	HorizontalCenter
-};
-
-enum TextVerticalAlignment
-{
-	Top,
-	VerticalCenter,
-	Bottom
-};
+#include "UIUtils.h"
 
 class TextButton : public Button
 {
@@ -30,8 +17,8 @@ class TextButton : public Button
 		float Spacing;
 		Color TextTint = BLACK;
 
-		TextHorizontalAlignment HorizontalAlignment = HorizontalCenter;
-		TextVerticalAlignment VerticalAlignment = VerticalCenter;
+		HorizontalAlignment TextHorizontalAlignment = HorizontalCenter;
+		VerticalAlignment TextVerticalAlignment = VerticalCenter;
 
 		float Padding = 0;
 
