@@ -4,6 +4,7 @@
 #pragma once
 
 #include <iostream>
+#include "raylib.h"
 // TODO: Reference additional headers your program requires here.
 
 void UpdateDrawFrame();

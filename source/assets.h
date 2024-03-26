@@ -5,6 +5,7 @@ extern Font MainFont;
 //extern Font DiscordChannelFont;
 
 extern Texture2D IconButton_Background;
+extern NPatchInfo IconButton_Background_NPatch;
 
 //Discord channel backgrounds
 
@@ -14,9 +15,13 @@ extern Texture2D EggBase_Outline;
 extern Texture2D EggBase_Color;
 
 //Egg Designs
-extern Texture2D EggDesign_SpikyStripes;
-extern Texture2D EggDesign_WavyStripes;
-extern Texture2D EggDesign_StraightStripes;
+extern Texture2D EggDesign_SpikyStripes_Color;
+extern Texture2D EggDesign_WavyStripes_Color;
+extern Texture2D EggDesign_StraightStripes_Color;
+
+extern Texture2D EggDesign_SpikyStripes_Outline;
+extern Texture2D EggDesign_WavyStripes_Outline;
+extern Texture2D EggDesign_StraightStripes_Outline;
 
 //Marks
 extern Texture2D EggMark_CatFace;

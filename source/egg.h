@@ -1,8 +1,6 @@
 #pragma once
 
-#ifndef RAYLIB_H
-	#include "raylib.h"
-#endif
+#include "raylib.h"
 
 enum EggDesign
 {

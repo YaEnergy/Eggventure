@@ -16,13 +16,18 @@ int main()
 	std::cout << "Polugo n donute's Eggventure! START" << std::endl;
 
 	// Init
+	SetConfigFlags(FLAG_MSAA_4X_HINT);
+
 	InitWindow(DESIGN_WIDTH, DESIGN_HEIGHT, WINDOW_TITLE);
 	InitAudioDevice();
 
 	SetTargetFPS(120);
-	SetWindowState(FLAG_MSAA_4X_HINT | FLAG_WINDOW_ALWAYS_RUN);
+
+	SetWindowState(FLAG_WINDOW_ALWAYS_RUN);
 
 	LoadAssets();
+
+	InitGame();
 	
 	//TODO: Emscripten for web builds modifications
 

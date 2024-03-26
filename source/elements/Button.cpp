@@ -1,11 +1,20 @@
+#include <iostream>
 #include "raylib.h"
-#include "button.h"
+#include "Button.h"
 
 bool IsRectHovered(Rectangle rect, Camera2D camera)
 {
 	Vector2 mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), camera);
 
 	return mouseWorldPos.x >= rect.x && mouseWorldPos.x <= rect.x + rect.width && mouseWorldPos.y >= rect.y && mouseWorldPos.y <= rect.y + rect.height;
+}
+
+void Button::Update(Camera2D camera)
+{
+	Hovered = IsHovered(camera);
+	Pressed = Hovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
+	Released = Hovered && IsMouseButtonReleased(MOUSE_BUTTON_LEFT);
+	Down = Hovered && IsMouseButtonDown(MOUSE_BUTTON_LEFT);
 }
 
 bool Button::IsHovered(Camera2D camera) const

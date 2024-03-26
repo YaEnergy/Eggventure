@@ -1,16 +1,37 @@
 #include "raylib.h"
 #include "renderer.h"
 #include "egg.h"
-#include "game.h"
+#include "elements/Button.h"
+#include "elements/TextButton.h"
 #include "eggCreator.h"
+#include "game.h"
 
 #include "assets.h"
 #include "Eggventure.h"
 
+Egg Eggs[NUM_EGGS] = {};
+Camera2D MainCamera = { {0, 0}, {0, 0}, 0, 1 };
 GameState State = Intro;
+TextButton startButton = TextButton();
 
+void InitIntro();
 void IntroUpdate();
 void IntroDraw();
+
+void InitGame()
+{
+	for (int i = 0; i < NUM_EGGS; i++)
+	{
+		Eggs[i].baseColor = WHITE;
+		Eggs[i].design = WavyStripes;
+		Eggs[i].mark = Star;
+		Eggs[i].designColor = LIGHTGRAY;
+		Eggs[i].markColor = GRAY;
+	}
+
+	InitIntro();
+}
+
 
 void GameUpdate()
 {
@@ -29,9 +50,37 @@ void GameUpdate()
 	}
 }
 
+void SetGameState(GameState state)
+{
+	State = state;
+}
+
+void InitIntro()
+{
+	startButton.TextFont = MainFont;
+	startButton.Text = "Play";
+	startButton.Background = IconButton_Background;
+	startButton.BackgroundNPatchInfo = IconButton_Background_NPatch;
+}
+
 void IntroUpdate()
 {
-	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+	int screenWidth = GetScreenWidth();
+	int screenHeight = GetScreenHeight();
+
+	float ratioMultiplier = GetScreenDesignRatioMultiplier();
+
+	startButton.FontSize = 48 * ratioMultiplier;
+	startButton.Spacing = 4.8F * ratioMultiplier;
+
+	float paddingScreenX = 60 * ratioMultiplier;
+	float height = startButton.FontSize + 12 * ratioMultiplier;
+
+	startButton.Rect = { paddingScreenX, screenHeight - height - 15 * ratioMultiplier, screenWidth - paddingScreenX * 2, height };
+
+	startButton.Update(MainCamera);
+
+	if (startButton.Released)
 	{
 		State = EggCreation;
 	}
@@ -110,10 +159,13 @@ void IntroDraw()
 	DrawTextEx(MainFont, introductionText9, { 10 * ratioMultiplier, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
 
 	//Start text
-	const char* startText = "Click to start!";
+	/*const char* startText = "Click to start!";
 	float startFontSize = 48 * ratioMultiplier;
 	Vector2 startSize = MeasureTextEx(MainFont, startText, startFontSize, startFontSize / 10);
 	DrawTextEx(MainFont, startText, { (screenWidth - startSize.x) / 2, screenHeight - startFontSize * (float)1.5 }, startFontSize, startFontSize / 10, WHITE);
+	*/
+
+	startButton.Draw();
 
 	EndDrawing();
 }

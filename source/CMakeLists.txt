@@ -53,7 +53,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "renderer.cpp"
     "egg.cpp"
  "eggCreator.cpp" 
- "graphics/TransitionScreen.cpp" "elements/Button.cpp")
+ "graphics/TransitionScreen.cpp" "elements/Button.cpp" "elements/TextButton.cpp")
 
 # Web Configurations
 if (${PLATFORM} STREQUAL "Web")
