@@ -31,8 +31,8 @@ void GameInit()
 	for (int i = 0; i < NUM_EGGS; i++)
 	{
 		Eggs[i].baseColor = WHITE;
-		Eggs[i].design = WavyStripes;
-		Eggs[i].mark = Star;
+		Eggs[i].design = NoEggDesign;
+		Eggs[i].mark = NoEggMark;
 		Eggs[i].designColor = LIGHTGRAY;
 		Eggs[i].markColor = GRAY;
 	}
@@ -92,7 +92,7 @@ void IntroUpdate()
 
 	startButton.Rect = { paddingScreenX, screenHeight - height - 15 * ratioMultiplier, screenWidth - paddingScreenX * 2, height };
 
-	startButton.Update(MainCamera);
+	startButton.UpdateButton(MainCamera);
 
 	if (startButton.Released)
 	{

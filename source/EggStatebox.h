@@ -30,4 +30,18 @@ class EggStatebox : public Statebox
 
 		void MoveTo(Vector2 position);
 		void Draw();
+
+		EggStatebox()
+		{
+			BoxEgg = { 0 };
+			Background = { 0 };
+			BackgroundNPatchInfo = { 0 };
+		}
+
+		EggStatebox(Rectangle rect, bool state, Egg egg, Texture2D background, NPatchInfo backgroundNPatchInfo) : Statebox(rect, state)
+		{
+			BoxEgg = egg;
+			Background = background;
+			BackgroundNPatchInfo = backgroundNPatchInfo;
+		}
 };

@@ -3,7 +3,7 @@
 #include "Button.h"
 #include "UIUtils.h"
 
-void Button::Update(Camera2D camera)
+void Button::UpdateButton(Camera2D camera)
 {
 	Hovered = IsHovered(camera);
 	Pressed = Hovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT);

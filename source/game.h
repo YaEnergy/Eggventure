@@ -3,7 +3,7 @@
 #include "raylib.h"
 #include "egg.h"
 
-const int NUM_EGGS = 3;
+const int NUM_EGGS = 5;
 
 enum GameState
 {

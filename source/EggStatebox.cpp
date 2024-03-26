@@ -56,5 +56,5 @@ void EggStatebox::Draw()
 			break;
 	}
 
-	DrawEgg(BoxEgg, { eggPosX, eggPosY }, { 0, 0 }, 0, EggScale, EggTint);
+	DrawEgg(BoxEgg, { Rect.x + eggPosX, Rect.y + eggPosY }, { 0, 0 }, 0, EggScale, EggTint);
 }

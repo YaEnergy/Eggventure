@@ -2,6 +2,8 @@
 
 #include "raylib.h"
 
+const int EGG_DESIGNS_NUM = 4;
+
 enum EggDesign
 {
 	NoEggDesign,
@@ -9,6 +11,8 @@ enum EggDesign
 	WavyStripes,
 	StraightStripes
 };
+
+const int EGG_MARKS_NUM = 4;
 
 enum EggMark
 {

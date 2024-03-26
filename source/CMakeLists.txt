@@ -58,6 +58,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "graphics/TransitionScreen.cpp" 
     "elements/Button.cpp" 
     "elements/TextButton.cpp" 
+    "elements/Statebox.cpp" 
     "elements/UIUtils.cpp" 
     "EggStatebox.cpp"
 )

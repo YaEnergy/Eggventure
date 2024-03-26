@@ -3,13 +3,12 @@
 #include "raylib.h"
 #include "Button.h"
 
-class Statebox : protected Button
+class Statebox : public Button
 {
 	public:
 		bool State = false;
-		bool ChangedThisFrame = false;
 
-		virtual void Update(Camera2D camera);
+		void UpdateStatebox(Camera2D camera);
 
 		Statebox()
 		{
