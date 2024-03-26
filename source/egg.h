@@ -28,3 +28,5 @@ struct Egg
 };
 
 void DrawEgg(Egg egg, Vector2 position, Vector2 origin, float rotationDeg, Vector2 scale, Color tint);
+
+Vector2 MeasureEgg(Vector2 scale);

@@ -16,6 +16,6 @@ enum GameState
 extern Camera2D MainCamera;
 extern Egg Eggs[];
 
-void InitGame();
+void GameInit();
 void GameUpdate();
 void SetGameState(GameState state);

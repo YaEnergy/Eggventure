@@ -27,7 +27,7 @@ int main()
 
 	LoadAssets();
 
-	InitGame();
+	GameInit();
 	
 	//TODO: Emscripten for web builds modifications
 

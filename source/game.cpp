@@ -14,11 +14,16 @@ Camera2D MainCamera = { {0, 0}, {0, 0}, 0, 1 };
 GameState State = Intro;
 TextButton startButton = TextButton();
 
-void InitIntro();
+float eggHidingCutsceneTime = 0.0F;
+
+void IntroInit();
 void IntroUpdate();
 void IntroDraw();
 
-void InitGame()
+void HidingUpdate();
+void HidingDraw();
+
+void GameInit()
 {
 	for (int i = 0; i < NUM_EGGS; i++)
 	{
@@ -29,7 +34,8 @@ void InitGame()
 		Eggs[i].markColor = GRAY;
 	}
 
-	InitIntro();
+	IntroInit();
+	EggCreatorInit();
 }
 
 
@@ -45,6 +51,10 @@ void GameUpdate()
 			EggCreatorUpdate();
 			EggCreatorDraw();
 			break;
+		case EggHiding:
+			HidingUpdate();
+			HidingDraw();
+			break;
 		default:
 			break;
 	}
@@ -55,7 +65,7 @@ void SetGameState(GameState state)
 	State = state;
 }
 
-void InitIntro()
+void IntroInit()
 {
 	startButton.TextFont = MainFont;
 	startButton.Text = "Play";
@@ -82,7 +92,7 @@ void IntroUpdate()
 
 	if (startButton.Released)
 	{
-		State = EggCreation;
+		SetGameState(EggCreation);
 	}
 }
 
@@ -158,14 +168,41 @@ void IntroDraw()
 
 	DrawTextEx(MainFont, introductionText9, { 10 * ratioMultiplier, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
 
-	//Start text
-	/*const char* startText = "Click to start!";
-	float startFontSize = 48 * ratioMultiplier;
-	Vector2 startSize = MeasureTextEx(MainFont, startText, startFontSize, startFontSize / 10);
-	DrawTextEx(MainFont, startText, { (screenWidth - startSize.x) / 2, screenHeight - startFontSize * (float)1.5 }, startFontSize, startFontSize / 10, WHITE);
-	*/
-
 	startButton.Draw();
+
+	EndDrawing();
+}
+
+void HidingUpdate()
+{
+	eggHidingCutsceneTime += GetFrameTime();
+
+	//Cutscene ends after x seconds
+	if (eggHidingCutsceneTime >= 3.0F)
+		SetGameState(EggHunt);
+}
+
+void HidingDraw()
+{
+	BeginDrawing();
+
+	int screenWidth = GetScreenWidth();
+	int screenHeight = GetScreenHeight();
+
+	//TODO: add flipping polygon donut sprite
+	double time = GetTime();
+
+	float ratioMultiplier = GetScreenDesignRatioMultiplier();
+
+	//Background
+	Rectangle screenRect = { 0, 0, (float)screenWidth, (float)screenHeight };
+	DrawRectangleGradientEx(screenRect, SKYBLUE, BLUE, BLUE, SKYBLUE);
+
+	//Title cutscene
+	const char* titleText = "Hiding eggs...";
+	float titleFontSize = 56 * ratioMultiplier;
+	Vector2 titleSize = MeasureTextEx(MainFont, titleText, titleFontSize, titleFontSize / 10);
+	DrawTextEx(MainFont, titleText, { (screenWidth - titleSize.x) / 2, titleFontSize }, titleFontSize, titleFontSize / 10, WHITE);
 
 	EndDrawing();
 }

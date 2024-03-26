@@ -38,3 +38,8 @@ void DrawEgg(Egg egg, Vector2 position, Vector2 origin, float rotationDeg, Vecto
 
 	DrawTexture(EggBase_Outline, position, origin, rotationDeg, scale, ColorTint(egg.baseColor, tint), false, false);
 }
+
+Vector2 MeasureEgg(Vector2 scale)
+{
+	return { EggBase_Outline.width * scale.x, EggBase_Outline.height * scale.y };
+}
