@@ -16,13 +16,9 @@ extern Texture2D EggBase_Outline;
 extern Texture2D EggBase_Color;
 
 //Egg Designs
-extern Texture2D EggDesign_SpikyStripes_Color;
-extern Texture2D EggDesign_WavyStripes_Color;
-extern Texture2D EggDesign_StraightStripes_Color;
-
-extern Texture2D EggDesign_SpikyStripes_Outline;
-extern Texture2D EggDesign_WavyStripes_Outline;
-extern Texture2D EggDesign_StraightStripes_Outline;
+extern Texture2D EggDesign_SpikyStripes;
+extern Texture2D EggDesign_WavyStripes;
+extern Texture2D EggDesign_StraightStripes;
 
 //Marks
 extern Texture2D EggMark_CatFace;

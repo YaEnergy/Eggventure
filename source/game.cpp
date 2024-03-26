@@ -136,7 +136,9 @@ void IntroDraw()
 	float introductionX = 30 * ratioMultiplier;
 	float introductionY = (float)screenHeight / 2 - introductionFontSize * 4.5f;
 
-	//TODO: there has to be a better way for doing this... eh too lazy
+	//TODO: there has to be a better way for doing this... eh too lazy to change it now though
+	//could've just set the line spacing, because I didn't know that function existed, if I ever need to make a change here I'll use that instead
+	//but prob won't need to anymore
 	const char* introductionText1 = "Polugo n donute has forgor";
 	const char* introductionText2 = "to make hideable eggs";
 	const char* introductionText3 = "for their event and needs";

@@ -16,14 +16,16 @@ int main()
 	std::cout << "Polugo n donute's Eggventure! START" << std::endl;
 
 	// Init
-	//SetConfigFlags(FLAG_MSAA_4X_HINT);
-
 	InitWindow(DESIGN_WIDTH, DESIGN_HEIGHT, WINDOW_TITLE);
 	InitAudioDevice();
 
 	SetTargetFPS(120);
 
 	SetWindowState(FLAG_WINDOW_ALWAYS_RUN);
+
+	Image icon = LoadImage("assets/Icon.png");
+
+	SetWindowIcon(icon);
 
 	LoadAssets();
 
@@ -40,6 +42,8 @@ int main()
 	//Deinit
 	CloseWindow();
 	CloseAudioDevice();
+
+	UnloadImage(icon);
 
 	UnloadAssets();
 
