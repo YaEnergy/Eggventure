@@ -10,7 +10,8 @@ enum GameState
 	Intro,
 	EggCreation,
 	EggHiding,
-	EggHunt
+	EggHunt,
+	Win
 };
 
 extern Camera2D MainCamera;

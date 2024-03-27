@@ -48,9 +48,9 @@ void LoadAssets()
 	EggDesign_StraightStripes = LoadTexture("assets/textures/egg/Egg_StraightStripes.png");
 
 	//Marks
-	EggMark_CatFace = LoadTexture("assets/egg/Egg_Mark_CatFace.png");
-	EggMark_Star = LoadTexture("assets/egg/Egg_Mark_Star.png");
-	EggMark_Circle = LoadTexture("assets/egg/Egg_Mark_Circle.png");
+	EggMark_CatFace = LoadTexture("assets/textures/egg/Egg_Mark_CatFace.png");
+	EggMark_Star = LoadTexture("assets/textures/egg/Egg_Mark_Star.png");
+	EggMark_Circle = LoadTexture("assets/textures/egg/Egg_Mark_Circle.png");
 }
 
 void UnloadAssets()

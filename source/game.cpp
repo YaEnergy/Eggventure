@@ -26,6 +26,9 @@ void IntroDraw();
 void HidingUpdate();
 void HidingDraw();
 
+void WinUpdate();
+void WinDraw();
+
 void GameInit()
 {
 	for (int i = 0; i < NUM_EGGS; i++)
@@ -57,6 +60,14 @@ void GameUpdate()
 		case EggHiding:
 			HidingUpdate();
 			HidingDraw();
+			break;
+		case EggHunt:
+			//HidingUpdate();
+			//HidingDraw();
+			break;
+		case Win:
+			WinUpdate();
+			WinDraw();
 			break;
 		default:
 			break;
@@ -211,7 +222,7 @@ void HidingUpdate()
 
 	//Cutscene ends after x seconds
 	if (eggHidingCutsceneTime >= 5.0F)
-		SetGameState(EggHunt);
+		SetGameState(Win);
 }
 
 void HidingDraw()
@@ -245,6 +256,55 @@ void HidingDraw()
 
 	//Polygon donut
 	DrawTexture(PolygonDonutTexture, { screenWidth / 2.0f, screenHeight / 2.0f + titleFontSize + 10 * ratioMultiplier }, { PolygonDonutTexture.width / 2.0f, PolygonDonutTexture.height / 2.0f }, polygonDonutRotateDeg, { 1.0f, 1.0f }, WHITE, false, false);
+
+	EndDrawing();
+}
+
+void WinUpdate()
+{
+	float deltaTime = GetFrameTime();
+
+	//rotating polygon donut
+	deltaRotatePolygonDonutTime += deltaTime;
+
+	if (deltaRotatePolygonDonutTime >= 0.5f)
+	{
+		deltaRotatePolygonDonutTime = 0.0f;
+		polygonDonutRotateDeg = -polygonDonutRotateDeg;
+	}
+}
+
+void WinDraw()
+{
+	BeginDrawing();
+
+	ClearBackground(BLACK);
+
+	int screenWidth = GetScreenWidth();
+	int screenHeight = GetScreenHeight();
+
+	float ratioMultiplier = GetScreenDesignRatioMultiplier();
+
+	//Background
+	Rectangle screenRect = { 0, 0, (float)screenWidth, (float)screenHeight };
+
+	DrawRectangleGradientEx(screenRect, GREEN, DARKGREEN, DARKGREEN, GREEN);
+
+	//Polygon donut
+	DrawTexture(PolygonDonutTexture, { screenWidth / 2.0f, screenHeight / 2.0f + 66 * ratioMultiplier }, { PolygonDonutTexture.width / 2.0f, PolygonDonutTexture.height / 2.0f }, polygonDonutRotateDeg, { 1.0f, 1.0f }, WHITE, false, false);
+
+	//Cutscene title
+	const char* titleText1 = "You found all the eggs!";
+	const char* titleText2 = "You won!";
+	float titleFontSize = 56 * ratioMultiplier;
+
+	SetTextLineSpacing((int)(titleFontSize + 15 * ratioMultiplier));
+
+	Vector2 titleSize1 = MeasureTextEx(MainFont, titleText1, titleFontSize, titleFontSize / 10);
+	DrawTextEx(MainFont, titleText1, { (screenWidth - titleSize1.x) / 2, titleFontSize }, titleFontSize, titleFontSize / 10, WHITE);
+
+	Vector2 titleSize2 = MeasureTextEx(MainFont, titleText2, titleFontSize, titleFontSize / 10);
+	DrawTextEx(MainFont, titleText2, { (screenWidth - titleSize2.x) / 2, titleFontSize * 2 + 5 * ratioMultiplier }, titleFontSize, titleFontSize / 10, WHITE);
 
 	EndDrawing();
 }

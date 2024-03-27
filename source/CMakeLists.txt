@@ -80,7 +80,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "elements/Statebox.cpp" 
     "elements/UIUtils.cpp" 
     "EggStatebox.cpp"
-)
+ "eggHunt.cpp")
 
 
 # Web Configurations
