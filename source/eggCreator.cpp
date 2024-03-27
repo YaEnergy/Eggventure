@@ -407,7 +407,9 @@ void EggCreatorDraw()
 	Vector2 titleSize = MeasureTextEx(MainFont, titleText, titleFontSize, titleFontSize / 10);
 	DrawTextEx(MainFont, titleText, { (screenWidth - titleSize.x) / 2, titleFontSize / 2 }, titleFontSize, titleFontSize / 10, WHITE);
 
+	//TODO: change this, this is bad
 	const char* eggNumText = TextFormat("Egg %01i/%01i", eggIndex + 1, NUM_EGGS);
+
 	float eggNumFontSize = 24 * ratioMultiplier;
 	Vector2 eggNumSize = MeasureTextEx(MainFont, eggNumText, eggNumFontSize, eggNumFontSize / 10);
 	DrawTextEx(MainFont, eggNumText, { (screenWidth - eggNumSize.x) / 2, titleFontSize / 2 + titleSize.y }, eggNumFontSize, eggNumFontSize / 10, WHITE);

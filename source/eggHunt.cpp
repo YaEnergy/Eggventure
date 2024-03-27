@@ -4,7 +4,21 @@
 #include "egg.h"
 #include "game.h"
 #include "Eggventure.h"
+#include "elements/TextButton.h"
 #include "elements/UIUtils.h"
+
+const float BASE_FONT_SIZE = 16.0f;
+
+const int NUM_CHANNELS = 5;
+
+enum DiscordChannel
+{
+	DISCORD_CHANNEL_GENARAL, //Best channel name
+	DISCORD_CHANNEL_GENERAL_2,
+	DISCORD_CHANNEL_THE_BUS,
+	DISCORD_CHANNEL_FISHING_LAKE,
+	DISCORD_CHANNEL_STOCK_MARKET_BOAT,
+};
 
 int numFoundEggs = 0;
 Vector2 eggPosition = { 0, 0 };
@@ -12,11 +26,41 @@ DiscordChannel eggChannel = DISCORD_CHANNEL_GENARAL;
 
 DiscordChannel currentChannel = DISCORD_CHANNEL_GENARAL;
 
+TextButton channelButtons[NUM_CHANNELS] = { TextButton(), TextButton(), TextButton(), TextButton(), TextButton() };
+
+void ChangeChannel(DiscordChannel channel);
 const char* GetChannelName(DiscordChannel channel);
 
 void EggHuntInit()
 {
+	//mmm i love copying values over, allowing me to make changes and forgetting to make them somewhere else
+	float barHeight = 50.0f;
+	float serverListWidth = 75.0f;
+	float channelListWidth = 225.0f;
+
+	float channelTextSize = BASE_FONT_SIZE / MeasureTextEx(MainFont, "AAAAAAAAAAAAAAAA", BASE_FONT_SIZE, BASE_FONT_SIZE / 10).x * (channelListWidth - 25);
+
+	// Button set up!!!
+	for (int i = 0; i < NUM_CHANNELS; i++)
+	{
+		channelButtons[i].FontSize = channelTextSize;
+		channelButtons[i].TextFont = MainFont;
+		channelButtons[i].Text = GetChannelName((DiscordChannel)i); //add hashtag infront of here
+		channelButtons[i].Background = SquareTexture;
+		channelButtons[i].BackgroundNPatchInfo = { 0, 0, 0, 0, NPATCH_NINE_PATCH };
+		channelButtons[i].BackgroundTint = BLANK;
+		channelButtons[i].HoverTint = LIGHTGRAY;
+		channelButtons[i].TextTint = WHITE;
+		channelButtons[i].Padding = 15;
+		channelButtons[i].TextHorizontalAlignment = Left;
+
+		channelButtons[i].Rect = { serverListWidth, barHeight + 15 + (channelTextSize + 10) * i, channelListWidth, channelTextSize + 10};
+	}
+
 	//do some randomisation crap here or something idk
+
+	//finish
+	ChangeChannel(DISCORD_CHANNEL_GENARAL);
 }
 
 void EggHuntUpdate()
@@ -24,7 +68,28 @@ void EggHuntUpdate()
 	//Update channel buttons
 	//and channel
 
+	for (int i = 0; i < NUM_CHANNELS; i++)
+	{
+		channelButtons[i].UpdateButton(MainCamera);
+
+		if (channelButtons[i].Released)
+		{
+			ChangeChannel((DiscordChannel)i);
+		}
+	}
+
 	//Check if egg is clicked and found
+}
+
+void ChangeChannel(DiscordChannel channel)
+{
+	Color selectedColor = { 255, 255, 255, 100 };
+	for (int i = 0; i < NUM_CHANNELS; i++)
+	{
+		channelButtons[i].BackgroundTint = i == channel ? selectedColor : BLANK;
+	}
+
+	currentChannel = channel;
 }
 
 void EggHuntDraw()
@@ -37,7 +102,6 @@ void EggHuntDraw()
 	int screenHeight = GetScreenHeight();
 
 	float ratioMultiplier = GetScreenDesignRatioMultiplier();
-	const float BASE_FONT_SIZE = 16.0f;
 
 	//Channel background
 
@@ -53,6 +117,11 @@ void EggHuntDraw()
 	//Channel list
 	float channelListWidth = 225.0f;
 	DrawRectangleRec({ serverListWidth, 0, channelListWidth, (float)screenHeight }, { 45, 45, 45, 255 });
+
+	for (int i = 0; i < NUM_CHANNELS; i++)
+	{
+		channelButtons[i].Draw();
+	}
 
 	//Bars
 	float barHeight = 50.0f;
@@ -92,7 +161,7 @@ void EggHuntDraw()
 
 const char* GetChannelName(DiscordChannel channel)
 {
-	switch (currentChannel)
+	switch (channel)
 	{
 		case DISCORD_CHANNEL_GENARAL:
 			return "genaral";

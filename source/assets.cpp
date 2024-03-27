@@ -3,6 +3,9 @@
 
 //Main
 Font MainFont = { 0 };
+
+Image SquareImage = { 0 };
+Texture2D SquareTexture = { 0 };
 Texture2D PolygonDonutTexture = { 0 };
 Texture2D ServerIconTexture = { 0 };
 
@@ -30,6 +33,9 @@ void LoadAssets()
 {
 	//Main
 	MainFont = LoadFontEx("assets/Qikki-Reg/Qarmic_sans_Abridged.ttf", 128, NULL, NULL);
+
+	SquareImage = GenImageColor(1, 1, WHITE);
+	SquareTexture = LoadTextureFromImage(SquareImage);
 
 	PolygonDonutTexture = LoadTexture("assets/textures/Polygon.png");
 	//SetTextureFilter(PolygonDonutTexture, TEXTURE_FILTER_BILINEAR);
@@ -60,6 +66,8 @@ void UnloadAssets()
 	//Main
 	UnloadFont(MainFont);
 
+	UnloadImage(SquareImage);
+	UnloadTexture(SquareTexture);
 	UnloadTexture(PolygonDonutTexture);
 	UnloadTexture(ServerIconTexture);
 

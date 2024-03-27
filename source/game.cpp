@@ -43,6 +43,7 @@ void GameInit()
 
 	IntroInit();
 	EggCreatorInit();
+	EggHuntInit();
 }
 
 

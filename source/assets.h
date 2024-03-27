@@ -4,6 +4,8 @@
 
 //Main
 extern Font MainFont;
+
+extern Texture2D SquareTexture;
 extern Texture2D PolygonDonutTexture;
 extern Texture2D ServerIconTexture;
 
