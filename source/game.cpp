@@ -4,6 +4,7 @@
 #include "elements/Button.h"
 #include "elements/TextButton.h"
 #include "eggCreator.h"
+#include "eggHunt.h"
 #include "game.h"
 
 #include "assets.h"
@@ -62,8 +63,8 @@ void GameUpdate()
 			HidingDraw();
 			break;
 		case EggHunt:
-			//HidingUpdate();
-			//HidingDraw();
+			EggHuntUpdate();
+			EggHuntDraw();
 			break;
 		case Win:
 			WinUpdate();
@@ -222,7 +223,7 @@ void HidingUpdate()
 
 	//Cutscene ends after x seconds
 	if (eggHidingCutsceneTime >= 5.0F)
-		SetGameState(Win);
+		SetGameState(EggHunt);
 }
 
 void HidingDraw()
