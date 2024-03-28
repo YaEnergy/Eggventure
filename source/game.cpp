@@ -19,6 +19,7 @@ float deltaRotatePolygonDonutTime = 0.0f;
 float polygonDonutRotateDeg = 20.0f;
 
 float eggHidingCutsceneTime = 0.0f;
+bool eggsHidden = false;
 
 void IntroInit();
 void IntroUpdate();
@@ -109,6 +110,7 @@ void IntroUpdate()
 
 	if (startButton.Released)
 	{
+		PlaySound(SFX_Start);
 		SetGameState(EggCreation);
 	}
 
@@ -120,6 +122,14 @@ void IntroUpdate()
 		deltaRotatePolygonDonutTime = 0.0f;
 		polygonDonutRotateDeg = -polygonDonutRotateDeg;
 	}
+
+	//Music
+	if (!IsMusicStreamPlaying(Music_Main))
+	{
+		PlayMusicStream(Music_Main);
+	}
+
+	UpdateMusicStream(Music_Main);
 }
 
 void IntroDraw()
@@ -221,10 +231,27 @@ void HidingUpdate()
 	}
 
 	eggHidingCutsceneTime += deltaTime;
+	
+	//Play cool sfx after 3 seconds
+	if (eggHidingCutsceneTime >= 3.0f && !eggsHidden)
+	{
+		eggsHidden = true;
+		PlaySound(SFX_EggCollect);
+	}
 
-	//Cutscene ends after x seconds
+	//Cutscene ends after 5 seconds
 	if (eggHidingCutsceneTime >= 5.0F)
+	{
 		SetGameState(EggHunt);
+	}
+
+	//Music
+	if (!IsMusicStreamPlaying(Music_Main))
+	{
+		PlayMusicStream(Music_Main);
+	}
+
+	UpdateMusicStream(Music_Main);
 }
 
 void HidingDraw()
@@ -241,17 +268,17 @@ void HidingDraw()
 	//Background
 	Rectangle screenRect = { 0, 0, (float)screenWidth, (float)screenHeight };
 
-	if (eggHidingCutsceneTime < 3.0f)
-	{
-		DrawRectangleGradientEx(screenRect, SKYBLUE, BLUE, BLUE, SKYBLUE);
-	}
-	else
+	if (eggsHidden)
 	{
 		DrawRectangleGradientEx(screenRect, GREEN, DARKGREEN, DARKGREEN, GREEN);
 	}
+	else
+	{
+		DrawRectangleGradientEx(screenRect, SKYBLUE, BLUE, BLUE, SKYBLUE);
+	}
 
 	//Cutscene title
-	const char* titleText = eggHidingCutsceneTime < 3.0f ? "Hiding eggs..." : "Go find the eggs!";
+	const char* titleText = eggsHidden ? "Go find the eggs!" : "Hiding eggs...";
 	float titleFontSize = 56 * ratioMultiplier;
 	Vector2 titleSize = MeasureTextEx(MainFont, titleText, titleFontSize, titleFontSize / 10);
 	DrawTextEx(MainFont, titleText, { (screenWidth - titleSize.x) / 2, titleFontSize }, titleFontSize, titleFontSize / 10, WHITE);
@@ -274,6 +301,13 @@ void WinUpdate()
 		deltaRotatePolygonDonutTime = 0.0f;
 		polygonDonutRotateDeg = -polygonDonutRotateDeg;
 	}
+
+	if (!IsMusicStreamPlaying(Music_Main))
+	{
+		PlayMusicStream(Music_Main);
+	}
+
+	UpdateMusicStream(Music_Main);
 }
 
 void WinDraw()
@@ -307,6 +341,18 @@ void WinDraw()
 
 	Vector2 titleSize2 = MeasureTextEx(MainFont, titleText2, titleFontSize, titleFontSize / 10);
 	DrawTextEx(MainFont, titleText2, { (screenWidth - titleSize2.x) / 2, titleFontSize * 2 + 5 * ratioMultiplier }, titleFontSize, titleFontSize / 10, WHITE);
+
+	///"Burn The World Waltz", "Pleasant Porridge"
+	///Kevin MacLeod(incompetech.com)
+	///Licensed under Creative Commons : By Attribution 3.0
+	///http://creativecommons.org/licenses/by/3.0/ 
+
+	const char* creditsText = "\"Burn The World Waltz\", \"Pleasant Porridge\"\nKevin MacLeod(incompetech.com)\nLicensed under Creative Commons : By Attribution 3.0\nhttp://creativecommons.org/licenses/by/3.0/";
+	float creditsFontSize = 24 * ratioMultiplier;
+
+	SetTextLineSpacing((int)(creditsFontSize + 5 * ratioMultiplier));
+
+	DrawTextEx(MainFont, creditsText, { 10 * ratioMultiplier, screenHeight - creditsFontSize * 4 - 30 * ratioMultiplier }, creditsFontSize, creditsFontSize / 10, WHITE);
 
 	EndDrawing();
 }

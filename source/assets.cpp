@@ -40,6 +40,17 @@ Texture2D EggMark_Star = { 0 };
 Texture2D EggMark_Circle = { 0 };
 Texture2D EggMark_Squiggle = { 0 };
 
+//SFX
+Sound SFX_Start = { 0 };
+Sound SFX_EggCollect = { 0 };
+Sound SFX_EggEditorSelect = { 0 };
+Sound SFX_ClickBunny = { 0 };
+Sound SFX_Win = { 0 };
+
+//Music
+Music Music_Main = { 0 };
+Music Music_Bunny = { 0 };
+
 void LoadAssets()
 {
 	//Main
@@ -91,6 +102,20 @@ void LoadAssets()
 	EggMark_Star = LoadTexture("assets/textures/egg/Egg_Mark_Star.png");
 	EggMark_Circle = LoadTexture("assets/textures/egg/Egg_Mark_Circle.png");
 	EggMark_Squiggle = LoadTexture("assets/textures/egg/Egg_Mark_Squiggle.png");
+
+	//SFX
+	SFX_Start = LoadSound("assets/sfx/Start.wav");
+	SFX_EggCollect = LoadSound("assets/sfx/EggCollect.wav");
+	SFX_EggEditorSelect = LoadSound("assets/sfx/EggEditorSelect.wav");
+	SFX_ClickBunny = LoadSound("assets/sfx/ClickBunny.wav");
+	SFX_Win = LoadSound("assets/sfx/Win.wav");
+
+	//Music
+	Music_Main = LoadMusicStream("assets/music/Pleasant Porridge.mp3");
+	Music_Main.looping = true;
+
+	Music_Bunny = LoadMusicStream("assets/music/Burn The World Waltz .mp3");
+	Music_Bunny.looping = true;
 }
 
 void UnloadAssets()
@@ -129,4 +154,11 @@ void UnloadAssets()
 	UnloadTexture(EggMark_Star);
 	UnloadTexture(EggMark_Circle);
 	UnloadTexture(EggMark_Squiggle);
+
+	//SFX
+	UnloadSound(SFX_Start);
+	UnloadSound(SFX_EggCollect);
+	UnloadSound(SFX_EggEditorSelect);
+	UnloadSound(SFX_ClickBunny);
+	UnloadSound(SFX_Win);
 }

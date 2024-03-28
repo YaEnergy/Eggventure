@@ -42,6 +42,17 @@ extern Texture2D EggMark_Star;
 extern Texture2D EggMark_Circle;
 extern Texture2D EggMark_Squiggle;
 
+//SFX
+extern Sound SFX_Start;
+extern Sound SFX_EggCollect;
+extern Sound SFX_EggEditorSelect;
+extern Sound SFX_ClickBunny;
+extern Sound SFX_Win;
+
+//Music
+extern Music Music_Main;
+extern Music Music_Bunny;
+
 void LoadAssets();
 
 void UnloadAssets();

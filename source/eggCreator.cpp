@@ -152,6 +152,7 @@ void EggCreatorUpdate()
 	if (nextButton.Released && eggIndex != NUM_EGGS - 1)
 	{
 		std::cout << "Next egg" << std::endl;
+		PlaySound(SFX_Start);
 		SetEggIndex(eggIndex + 1);
 
 		if (eggIndex == NUM_EGGS - 1)
@@ -165,6 +166,7 @@ void EggCreatorUpdate()
 	else if (nextButton.Released && eggIndex == NUM_EGGS - 1)
 	{
 		std::cout << "Finished" << std::endl;
+		PlaySound(SFX_Start);
 		SetGameState(EggHiding);
 	}
 
@@ -186,6 +188,7 @@ void EggCreatorUpdate()
 
 		if (designStateboxes[i].Released)
 		{
+			PlaySound(SFX_EggEditorSelect);
 			SetEggDesign(designStateboxes[i].State ? designStateboxes[i].BoxEgg.design : NoEggDesign);
 		}
 	}
@@ -201,6 +204,7 @@ void EggCreatorUpdate()
 
 		if (markStateboxes[i].Released)
 		{
+			PlaySound(SFX_EggEditorSelect);
 			SetEggMark(markStateboxes[i].State ? markStateboxes[i].BoxEgg.mark : NoEggMark);
 		}
 	}
@@ -218,6 +222,7 @@ void EggCreatorUpdate()
 
 		if (baseColorStateboxes[i].Released)
 		{
+			PlaySound(SFX_EggEditorSelect);
 			SetEggBaseColor(baseColorStateboxes[i].State ? baseColorStateboxes[i].BoxEgg.baseColor : WHITE);
 		}
 	}
@@ -233,6 +238,7 @@ void EggCreatorUpdate()
 
 		if (designColorStateboxes[i].Released)
 		{
+			PlaySound(SFX_EggEditorSelect);
 			SetEggDesignColor(designColorStateboxes[i].State ? designColorStateboxes[i].BoxEgg.designColor : LIGHTGRAY);
 		}
 	}
@@ -248,9 +254,18 @@ void EggCreatorUpdate()
 
 		if (markColorStateboxes[i].Released)
 		{
+			PlaySound(SFX_EggEditorSelect);
 			SetEggMarkColor(markColorStateboxes[i].State ? markColorStateboxes[i].BoxEgg.markColor : GRAY);
 		}
 	}
+
+	//Music
+	if (!IsMusicStreamPlaying(Music_Main))
+	{
+		PlayMusicStream(Music_Main);
+	}
+
+	UpdateMusicStream(Music_Main);
 }
 
 bool AreColorsEqual(Color color1, Color color2)

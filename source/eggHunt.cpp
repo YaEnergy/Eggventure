@@ -28,9 +28,9 @@ DiscordChannel eggChannel = DISCORD_CHANNEL_GENARAL;
 Vector2 bunnyPosition = { 0, 0 };
 Vector2 bunnyScale = { 0.5f, 0.5f };
 Vector2 bunnyVelocity = { 0, 0 };
-float bunnySpeed = 200;
+float bunnySpeed = 75.0f;
 
-int bunnyClicksLeft = 3;
+int bunnyClicksLeft = 5;
 float deltaBunnyClickTime = 0.0f;
 
 DiscordChannel currentChannel = DISCORD_CHANNEL_GENARAL;
@@ -38,6 +38,7 @@ DiscordChannel currentChannel = DISCORD_CHANNEL_GENARAL;
 TextButton channelButtons[NUM_CHANNELS] = { TextButton(), TextButton(), TextButton(), TextButton(), TextButton() };
 
 bool IsEggHovered();
+bool IsBunnyHovered();
 void ChangeChannel(DiscordChannel channel);
 void RandomHideEgg();
 const char* GetChannelName(DiscordChannel channel);
@@ -70,7 +71,6 @@ void EggHuntInit()
 	}
 
 	//da bunny
-	bunnyClicksLeft = 3;
 	deltaBunnyClickTime = 0.5f;
 
 	float bunnyAngleDeg = (float)GetRandomValue(0, 360);
@@ -177,11 +177,12 @@ void EggHuntUpdate()
 		}
 	}
 
-	//Check if egg is clicked and found
-	if (IsEggHovered() && IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+	//Check if egg is clicked and found, (or bunny if they exist)
+	if ((IsEggHovered() || (IsBunnyHovered() && numFoundEggs == NUM_EGGS - 1 && bunnyClicksLeft > 0)) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && currentChannel == eggChannel)
 	{
 		if (numFoundEggs == NUM_EGGS - 1 && bunnyClicksLeft > 0)
 		{
+			PlaySound(SFX_ClickBunny);
 			bunnyClicksLeft--;
 
 			//Double bunny speed
@@ -193,13 +194,35 @@ void EggHuntUpdate()
 		else
 		{
 			numFoundEggs++;
+			PlaySound(SFX_EggCollect);
 			RandomHideEgg();
 		}
+	}
+
+	//La music
+	if (bunnyClicksLeft == 0 || numFoundEggs != NUM_EGGS - 1 || currentChannel != eggChannel)
+	{
+		if (!IsMusicStreamPlaying(Music_Main))
+		{
+			PlayMusicStream(Music_Main);
+		}
+
+		UpdateMusicStream(Music_Main);
+	}
+	else
+	{
+		if (!IsMusicStreamPlaying(Music_Bunny))
+		{
+			PlayMusicStream(Music_Bunny);
+		}
+
+		UpdateMusicStream(Music_Bunny);
 	}
 
 	//If all eggs have been found
 	if (numFoundEggs == NUM_EGGS)
 	{
+		PlaySound(SFX_Win);
 		SetGameState(Win);
 	}
 }
@@ -208,6 +231,11 @@ bool IsEggHovered()
 {
 	Vector2 eggSize = MeasureEgg(eggScale);
 	return IsRectHovered({ eggPosition.x - eggSize.x / 2, eggPosition.y - eggSize.y / 2,  eggSize.x, eggSize.y }, MainCamera);
+}
+
+bool IsBunnyHovered()
+{
+	return IsRectHovered({ bunnyPosition.x - BunnyTexture.width * bunnyScale.x / 2, bunnyPosition.y - BunnyTexture.height * bunnyScale.y / 2, BunnyTexture.width * bunnyScale.x, BunnyTexture.height * bunnyScale.y }, MainCamera);
 }
 
 void ChangeChannel(DiscordChannel channel)
@@ -236,7 +264,7 @@ void RandomHideEgg()
 	Vector2 eggSize = MeasureEgg(eggScale);
 	Vector2 benchEggSize = MeasureEgg({ 0.35f * ratioMultiplier, 0.35f * ratioMultiplier });
 
-	eggPosition = { (float)GetRandomValue((int)(serverListWidth + channelListWidth + eggSize.x / 2), (int)(screenWidth - eggSize.x / 2)), (float)GetRandomValue((int)(barHeight) + eggSize.y / 2, (int)(screenHeight - eggSize.y / 2 - benchEggSize.y)) };
+	eggPosition = { (float)GetRandomValue((int)(serverListWidth + channelListWidth + eggSize.x / 2.0f), (int)((float)screenWidth - eggSize.x / 2.0f)), (float)GetRandomValue((int)(barHeight) + eggSize.y / 2, (int)((float)screenHeight - eggSize.y / 2.0f - benchEggSize.y)) };
 	bunnyPosition = eggPosition;
 
 	//Random channel, just not the current egg channel
@@ -332,7 +360,7 @@ void EggHuntDraw()
 			if (bunnyVelocity.y < 0)
 				angle *= -1;
 
-			DrawTexture(BunnyTexture, bunnyPosition, { BunnyTexture.width * bunnyScale.x / 2.0f,  BunnyTexture.height * bunnyScale.y / 2.0f }, 90 - angle * RAD2DEG, bunnyScale, deltaBunnyClickTime < 0.25f ? SKYBLUE : WHITE, false, false);
+			DrawTexture(BunnyTexture, bunnyPosition, { BunnyTexture.width * bunnyScale.x / 2.0f,  BunnyTexture.height * bunnyScale.y / 2.0f }, 90 - angle * RAD2DEG, bunnyScale, deltaBunnyClickTime < 0.25f ? SKYBLUE : (IsBunnyHovered() ? LIGHTGRAY : WHITE), false, false);
 		}
 	}
 
@@ -343,6 +371,8 @@ void EggHuntDraw()
 	{
 		DrawEgg(Eggs[i], { serverListWidth + channelListWidth + benchEggSize.x * i, (float)screenHeight }, {0, benchEggSize.y}, 0, {0.35f * ratioMultiplier, 0.35f * ratioMultiplier}, {255, 255, 255, 255});
 	}
+
+	DrawFPS(0, 0);
 
 	EndDrawing();
 }
@@ -380,5 +410,7 @@ Texture2D GetChannelBackgroundTexture(DiscordChannel channel)
 			return Channel_StockMarketBoatTexture;
 		case DISCORD_CHANNEL_THE_BUS:
 			return Channel_TheBusTexture;
+		default:
+			return { 0 };
 	}
 }
