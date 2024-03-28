@@ -15,9 +15,9 @@ enum DiscordChannel
 {
 	DISCORD_CHANNEL_GENARAL, //Best channel name
 	DISCORD_CHANNEL_GENERAL_2,
-	DISCORD_CHANNEL_THE_BUS,
 	DISCORD_CHANNEL_FISHING_LAKE,
 	DISCORD_CHANNEL_STOCK_MARKET_BOAT,
+	DISCORD_CHANNEL_THE_BUS,
 };
 
 int numFoundEggs = 0;
@@ -30,6 +30,7 @@ TextButton channelButtons[NUM_CHANNELS] = { TextButton(), TextButton(), TextButt
 
 void ChangeChannel(DiscordChannel channel);
 const char* GetChannelName(DiscordChannel channel);
+Texture2D GetChannelBackgroundTexture(DiscordChannel channel);
 
 void EggHuntInit()
 {
@@ -103,7 +104,6 @@ void EggHuntDraw()
 
 	float ratioMultiplier = GetScreenDesignRatioMultiplier();
 
-	//Channel background
 
 	//Server list
 	float serverListWidth = 75.0f;
@@ -154,6 +154,10 @@ void EggHuntDraw()
 
 	DrawTextEx(MainFont, channelName, { serverListWidth + channelListWidth + channelIconSize.x + 15, barHeight / 2 - channelNameFontSize / 2 }, channelNameFontSize, channelNameFontSize / 10, WHITE);
 
+	//Channel background
+	Texture2D backgroundTexture = GetChannelBackgroundTexture(currentChannel);
+	DrawTexture(backgroundTexture, { serverListWidth + channelListWidth, barHeight }, { 0, 0 }, 0, { 1, 1 }, WHITE, false, false);
+
 	//Egg with bunny sometimes idk
 
 	EndDrawing();
@@ -175,5 +179,22 @@ const char* GetChannelName(DiscordChannel channel)
 			return "the-bus";
 		default:
 			return "illegal-channel-lol";
+	}
+}
+
+Texture2D GetChannelBackgroundTexture(DiscordChannel channel)
+{
+	switch (channel)
+	{
+		case DISCORD_CHANNEL_GENARAL:
+			return Channel_GenaralTexture;
+		case DISCORD_CHANNEL_GENERAL_2:
+			return Channel_General2Texture;
+		case DISCORD_CHANNEL_FISHING_LAKE:
+			return Channel_FishingLakeTexture;
+		case DISCORD_CHANNEL_STOCK_MARKET_BOAT:
+			return Channel_StockMarketBoatTexture;
+		case DISCORD_CHANNEL_THE_BUS:
+			return Channel_TheBusTexture;
 	}
 }

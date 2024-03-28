@@ -2,12 +2,21 @@
 
 #include "raylib.h"
 
+//why am i using extern, eh whatever
+
 //Main
 extern Font MainFont;
 
 extern Texture2D SquareTexture;
 extern Texture2D PolygonDonutTexture;
+
+//Disc stuff
 extern Texture2D ServerIconTexture;
+extern Texture2D Channel_GenaralTexture;
+extern Texture2D Channel_General2Texture;
+extern Texture2D Channel_FishingLakeTexture;
+extern Texture2D Channel_StockMarketBoatTexture;
+extern Texture2D Channel_TheBusTexture;
 
 extern Texture2D IconButton_Background;
 extern NPatchInfo IconButton_Background_NPatch;

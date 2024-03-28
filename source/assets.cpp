@@ -7,7 +7,14 @@ Font MainFont = { 0 };
 Image SquareImage = { 0 };
 Texture2D SquareTexture = { 0 };
 Texture2D PolygonDonutTexture = { 0 };
+
+//Disc stuff
 Texture2D ServerIconTexture = { 0 };
+Texture2D Channel_GenaralTexture = { 0 };
+Texture2D Channel_General2Texture = { 0 };
+Texture2D Channel_FishingLakeTexture = { 0 };
+Texture2D Channel_StockMarketBoatTexture = { 0 };
+Texture2D Channel_TheBusTexture = { 0 };
 
 Texture2D IconButton_Background = { 0 };
 NPatchInfo IconButton_Background_NPatch = { 0 };
@@ -38,9 +45,25 @@ void LoadAssets()
 	SquareTexture = LoadTextureFromImage(SquareImage);
 
 	PolygonDonutTexture = LoadTexture("assets/textures/Polygon.png");
-	//SetTextureFilter(PolygonDonutTexture, TEXTURE_FILTER_BILINEAR);
+	SetTextureFilter(PolygonDonutTexture, TEXTURE_FILTER_BILINEAR);
 
 	ServerIconTexture = LoadTexture("assets/textures/ServerIcon.png");
+	SetTextureFilter(ServerIconTexture, TEXTURE_FILTER_BILINEAR);
+
+	Channel_GenaralTexture = LoadTexture("assets/textures/channels/genaral.png");
+	SetTextureFilter(Channel_GenaralTexture, TEXTURE_FILTER_BILINEAR);
+
+	Channel_General2Texture = LoadTexture("assets/textures/channels/general2.png");
+	SetTextureFilter(Channel_General2Texture, TEXTURE_FILTER_BILINEAR);
+
+	Channel_FishingLakeTexture = LoadTexture("assets/textures/channels/fishinglake.png");
+	SetTextureFilter(Channel_FishingLakeTexture, TEXTURE_FILTER_BILINEAR);
+
+	Channel_StockMarketBoatTexture = LoadTexture("assets/textures/channels/stockmarketboat.png");
+	SetTextureFilter(Channel_StockMarketBoatTexture, TEXTURE_FILTER_BILINEAR);
+
+	Channel_TheBusTexture = LoadTexture("assets/textures/channels/thebus.png");
+	SetTextureFilter(Channel_TheBusTexture, TEXTURE_FILTER_BILINEAR);
 
 	IconButton_Background = LoadTexture("assets/textures/IconButton_Background.png");
 	IconButton_Background_NPatch = { { 0, 0, (float)IconButton_Background.width, (float)IconButton_Background.height }, 12, 12, 12, 12, NPATCH_NINE_PATCH };
@@ -70,6 +93,12 @@ void UnloadAssets()
 	UnloadTexture(SquareTexture);
 	UnloadTexture(PolygonDonutTexture);
 	UnloadTexture(ServerIconTexture);
+
+	UnloadTexture(Channel_GenaralTexture);
+	UnloadTexture(Channel_General2Texture);
+	UnloadTexture(Channel_FishingLakeTexture);
+	UnloadTexture(Channel_StockMarketBoatTexture);
+	UnloadTexture(Channel_TheBusTexture);
 
 	UnloadTexture(IconButton_Background);
 
