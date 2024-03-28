@@ -32,11 +32,13 @@ extern Texture2D EggBase_Color;
 extern Texture2D EggDesign_SpikyStripes;
 extern Texture2D EggDesign_WavyStripes;
 extern Texture2D EggDesign_StraightStripes;
+extern Texture2D EggDesign_Dots;
 
 //Marks
 extern Texture2D EggMark_CatFace;
 extern Texture2D EggMark_Star;
 extern Texture2D EggMark_Circle;
+extern Texture2D EggMark_Squiggle;
 
 void LoadAssets();
 
