@@ -18,6 +18,8 @@ extern Texture2D Channel_FishingLakeTexture;
 extern Texture2D Channel_StockMarketBoatTexture;
 extern Texture2D Channel_TheBusTexture;
 
+extern Texture2D BunnyTexture;
+
 extern Texture2D IconButton_Background;
 extern NPatchInfo IconButton_Background_NPatch;
 

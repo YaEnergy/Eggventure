@@ -16,6 +16,8 @@ Texture2D Channel_FishingLakeTexture = { 0 };
 Texture2D Channel_StockMarketBoatTexture = { 0 };
 Texture2D Channel_TheBusTexture = { 0 };
 
+Texture2D BunnyTexture = { 0 };
+
 Texture2D IconButton_Background = { 0 };
 NPatchInfo IconButton_Background_NPatch = { 0 };
 
@@ -67,6 +69,9 @@ void LoadAssets()
 	Channel_TheBusTexture = LoadTexture("assets/textures/channels/thebus.png");
 	SetTextureFilter(Channel_TheBusTexture, TEXTURE_FILTER_BILINEAR);
 
+	BunnyTexture = LoadTexture("assets/textures/Bunny.png");
+	SetTextureFilter(BunnyTexture, TEXTURE_FILTER_BILINEAR);
+
 	IconButton_Background = LoadTexture("assets/textures/IconButton_Background.png");
 	IconButton_Background_NPatch = { { 0, 0, (float)IconButton_Background.width, (float)IconButton_Background.height }, 12, 12, 12, 12, NPATCH_NINE_PATCH };
 
@@ -103,6 +108,8 @@ void UnloadAssets()
 	UnloadTexture(Channel_FishingLakeTexture);
 	UnloadTexture(Channel_StockMarketBoatTexture);
 	UnloadTexture(Channel_TheBusTexture);
+
+	UnloadTexture(BunnyTexture);
 
 	UnloadTexture(IconButton_Background);
 
