@@ -297,7 +297,7 @@ void WinDraw()
 
 	//Cutscene title
 	const char* titleText1 = "You found all the eggs!";
-	const char* titleText2 = "You won!";
+	const char* titleText2 = "Thanks for playing!";
 	float titleFontSize = 56 * ratioMultiplier;
 
 	SetTextLineSpacing((int)(titleFontSize + 15 * ratioMultiplier));

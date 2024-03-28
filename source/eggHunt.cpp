@@ -29,6 +29,7 @@ DiscordChannel currentChannel = DISCORD_CHANNEL_GENARAL;
 TextButton channelButtons[NUM_CHANNELS] = { TextButton(), TextButton(), TextButton(), TextButton(), TextButton() };
 
 void ChangeChannel(DiscordChannel channel);
+void RandomHideEgg();
 const char* GetChannelName(DiscordChannel channel);
 Texture2D GetChannelBackgroundTexture(DiscordChannel channel);
 
@@ -59,6 +60,8 @@ void EggHuntInit()
 	}
 
 	//do some randomisation crap here or something idk
+	numFoundEggs = 0;
+	RandomHideEgg();
 
 	//finish
 	ChangeChannel(DISCORD_CHANNEL_GENARAL);
@@ -66,9 +69,13 @@ void EggHuntInit()
 
 void EggHuntUpdate()
 {
+	int screenWidth = GetScreenWidth();
+	int screenHeight = GetScreenHeight();
+
+	float ratioMultiplier = GetScreenDesignRatioMultiplier();
+
 	//Update channel buttons
 	//and channel
-
 	for (int i = 0; i < NUM_CHANNELS; i++)
 	{
 		channelButtons[i].UpdateButton(MainCamera);
@@ -79,7 +86,20 @@ void EggHuntUpdate()
 		}
 	}
 
+	Vector2 eggSize = MeasureEgg({ 0.25f * ratioMultiplier, 0.25f * ratioMultiplier });
+
 	//Check if egg is clicked and found
+	if (IsRectHovered({ eggPosition.x, eggPosition.y,  eggSize.x, eggSize.y }, MainCamera) && IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+	{
+		numFoundEggs++;
+		RandomHideEgg();
+	}
+
+	//If all eggs have been found
+	if (numFoundEggs == NUM_EGGS)
+	{
+		SetGameState(Win);
+	}
 }
 
 void ChangeChannel(DiscordChannel channel)
@@ -93,6 +113,24 @@ void ChangeChannel(DiscordChannel channel)
 	currentChannel = channel;
 }
 
+void RandomHideEgg()
+{
+	int screenWidth = GetScreenWidth();
+	int screenHeight = GetScreenHeight();
+
+	float ratioMultiplier = GetScreenDesignRatioMultiplier();
+
+	//mmm i love copying values over, allowing me to make changes and forgetting to make them somewhere else
+	float barHeight = 50.0f;
+	float serverListWidth = 75.0f;
+	float channelListWidth = 225.0f;
+
+	Vector2 eggSize = MeasureEgg({ 0.25f * ratioMultiplier, 0.25f * ratioMultiplier });
+
+	eggPosition = { (float)GetRandomValue((int)(serverListWidth + channelListWidth), (int)(screenWidth - eggSize.x)), (float)GetRandomValue((int)(barHeight), (int)(screenHeight - eggSize.y * 2)) };
+	eggChannel = (DiscordChannel)GetRandomValue(0, NUM_CHANNELS - 1);
+}
+
 void EggHuntDraw()
 {
 	BeginDrawing();
@@ -103,7 +141,6 @@ void EggHuntDraw()
 	int screenHeight = GetScreenHeight();
 
 	float ratioMultiplier = GetScreenDesignRatioMultiplier();
-
 
 	//Server list
 	float serverListWidth = 75.0f;
@@ -159,6 +196,18 @@ void EggHuntDraw()
 	DrawTexture(backgroundTexture, { serverListWidth + channelListWidth, barHeight }, { 0, 0 }, 0, { 1, 1 }, WHITE, false, false);
 
 	//Egg with bunny sometimes idk
+	if (currentChannel == eggChannel)
+	{
+		DrawEgg(Eggs[numFoundEggs], eggPosition, { 0, 0 }, 0, { 0.25f * ratioMultiplier, 0.25f * ratioMultiplier }, { 255, 255, 255, 30});
+	}
+
+	//Draw found eggs on the bottom
+	Vector2 eggSize = MeasureEgg({ 0.25f * ratioMultiplier, 0.25f * ratioMultiplier });
+
+	for (int i = 0; i < numFoundEggs; i++)
+	{
+		DrawEgg(Eggs[i], { serverListWidth + channelListWidth + eggSize.x * i, (float)screenHeight }, {0, eggSize.y}, 0, {0.25f * ratioMultiplier, 0.25f * ratioMultiplier}, {255, 255, 255, 255});
+	}
 
 	EndDrawing();
 }
