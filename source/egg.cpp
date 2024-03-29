@@ -21,6 +21,9 @@ void DrawEgg(Egg egg, Vector2 position, Vector2 origin, float rotationDeg, Vecto
 		case EGG_DESIGN_DOTS:
 			DrawTexture(EggDesign_Dots, position, origin, rotationDeg, scale, ColorTint(egg.designColor, tint), false, false);
 			break;
+		case EGG_DESIGN_SQUIGGLES:
+			DrawTexture(EggDesign_Squiggles, position, origin, rotationDeg, scale, ColorTint(egg.designColor, tint), false, false);
+			break;
 	}
 
 	switch (egg.mark)
@@ -36,6 +39,9 @@ void DrawEgg(Egg egg, Vector2 position, Vector2 origin, float rotationDeg, Vecto
 			break;
 		case EGG_MARK_SQUIGGLE:
 			DrawTexture(EggMark_Squiggle, position, origin, rotationDeg, scale, ColorTint(egg.markColor, tint), false, false);
+			break;
+		case EGG_MARK_HEART:
+			DrawTexture(EggMark_Heart, position, origin, rotationDeg, scale, ColorTint(egg.markColor, tint), false, false);
 			break;
 	}
 

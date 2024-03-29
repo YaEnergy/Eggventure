@@ -2,7 +2,7 @@
 
 #include "raylib.h"
 
-const int EGG_DESIGNS_NUM = 5;
+const int EGG_DESIGNS_NUM = 6;
 
 enum EggDesign
 {
@@ -10,10 +10,11 @@ enum EggDesign
 	SpikyStripes,
 	WavyStripes,
 	StraightStripes,
-	EGG_DESIGN_DOTS
+	EGG_DESIGN_DOTS,
+	EGG_DESIGN_SQUIGGLES
 };
 
-const int EGG_MARKS_NUM = 5;
+const int EGG_MARKS_NUM = 6;
 
 enum EggMark
 {
@@ -21,7 +22,8 @@ enum EggMark
 	CatFace,
 	Star,
 	Circle,
-	EGG_MARK_SQUIGGLE
+	EGG_MARK_SQUIGGLE,
+	EGG_MARK_HEART
 };
 
 struct Egg

@@ -35,12 +35,14 @@ extern Texture2D EggDesign_SpikyStripes;
 extern Texture2D EggDesign_WavyStripes;
 extern Texture2D EggDesign_StraightStripes;
 extern Texture2D EggDesign_Dots;
+extern Texture2D EggDesign_Squiggles;
 
 //Marks
 extern Texture2D EggMark_CatFace;
 extern Texture2D EggMark_Star;
 extern Texture2D EggMark_Circle;
 extern Texture2D EggMark_Squiggle;
+extern Texture2D EggMark_Heart;
 
 //SFX
 extern Sound SFX_Start;

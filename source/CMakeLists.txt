@@ -83,7 +83,6 @@ target_sources(${PROJECT_NAME} PRIVATE
     "eggHunt.cpp"
 )
 
-
 # Web Configurations
 #if (${PLATFORM} STREQUAL "Web")
     # Tell Emscripten to build an example.html file.

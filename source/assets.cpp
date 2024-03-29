@@ -33,12 +33,14 @@ Texture2D EggDesign_SpikyStripes = { 0 };
 Texture2D EggDesign_WavyStripes = { 0 };
 Texture2D EggDesign_StraightStripes = { 0 };
 Texture2D EggDesign_Dots = { 0 };
+Texture2D EggDesign_Squiggles = { 0 };
 
 //Egg Marks
 Texture2D EggMark_CatFace = { 0 };
 Texture2D EggMark_Star = { 0 };
 Texture2D EggMark_Circle = { 0 };
 Texture2D EggMark_Squiggle = { 0 };
+Texture2D EggMark_Heart = { 0 };
 
 //SFX
 Sound SFX_Start = { 0 };
@@ -96,12 +98,14 @@ void LoadAssets()
 	EggDesign_WavyStripes = LoadTexture("assets/textures/egg/Egg_WavyStripes.png");
 	EggDesign_StraightStripes = LoadTexture("assets/textures/egg/Egg_StraightStripes.png");
 	EggDesign_Dots = LoadTexture("assets/textures/egg/Egg_Dots.png");
+	EggDesign_Squiggles = LoadTexture("assets/textures/egg/Egg_Design_Squiggles.png");
 
 	//Marks
 	EggMark_CatFace = LoadTexture("assets/textures/egg/Egg_Mark_CatFace.png");
 	EggMark_Star = LoadTexture("assets/textures/egg/Egg_Mark_Star.png");
 	EggMark_Circle = LoadTexture("assets/textures/egg/Egg_Mark_Circle.png");
 	EggMark_Squiggle = LoadTexture("assets/textures/egg/Egg_Mark_Squiggle.png");
+	EggMark_Heart = LoadTexture("assets/textures/egg/Egg_Mark_Heart.png");
 
 	//SFX
 	SFX_Start = LoadSound("assets/sfx/Start.wav");
@@ -148,12 +152,14 @@ void UnloadAssets()
 	UnloadTexture(EggDesign_WavyStripes);
 	UnloadTexture(EggDesign_StraightStripes);
 	UnloadTexture(EggDesign_Dots);
+	UnloadTexture(EggDesign_Squiggles);
 
 	//Marks
 	UnloadTexture(EggMark_CatFace);
 	UnloadTexture(EggMark_Star);
 	UnloadTexture(EggMark_Circle);
 	UnloadTexture(EggMark_Squiggle);
+	UnloadTexture(EggMark_Heart);
 
 	//SFX
 	UnloadSound(SFX_Start);
