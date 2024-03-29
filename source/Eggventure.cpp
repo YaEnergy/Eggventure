@@ -6,6 +6,13 @@
 #include "raylib.h"
 #include "assets.h"
 
+//#define PLATFORM_WEB
+
+#if defined(PLATFORM_WEB)
+	//#include <emscripten/emscripten.h>
+#endif
+
+
 const char* WINDOW_TITLE = "Polugo n donute's Eggventure!";
 
 const int DESIGN_WIDTH = 800;
@@ -29,7 +36,6 @@ int main()
 	InitWindow(DESIGN_WIDTH, DESIGN_HEIGHT, WINDOW_TITLE);
 	InitAudioDevice();
 
-	SetTargetFPS(120);
 
 	SetWindowState(FLAG_WINDOW_ALWAYS_RUN);
 
@@ -37,12 +43,17 @@ int main()
 
 	SetWindowIcon(icon);
 
+
 	LoadAssets();
 
 	GameInit();
 	
 	//TODO: Emscripten for web builds modifications
 
+#if defined(PLATFORM_WEB)
+	emscripten_set_main_loop(UpdateDrawFrame, 0, 1);
+#else
+	SetTargetFPS(120);
 	//Main loop
 	while (!WindowShouldClose())
 	{
@@ -51,6 +62,8 @@ int main()
 
 	//Deinit
 	CloseWindow();
+#endif
+
 	CloseAudioDevice();
 
 	UnloadImage(icon);

@@ -13,21 +13,21 @@ int eggIndex = 0;
 TextButton nextButton = TextButton();
 
 //Designs
-EggStatebox designStateboxes[EGG_DESIGNS_NUM - 1] = { EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox()};
+EggStatebox designStateboxes[EGG_DESIGNS_NUM - 1] = { };
 
 //Marks
-EggStatebox markStateboxes[EGG_MARKS_NUM - 1] = { EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox()};
+EggStatebox markStateboxes[EGG_MARKS_NUM - 1] = { };
 
-const int CHOOSEABLE_COLORS_NUM = 9;
+const int CHOOSEABLE_COLORS_NUM = 10;
 
 //Base Colors
-EggStatebox baseColorStateboxes[CHOOSEABLE_COLORS_NUM] = { EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox() };
+EggStatebox baseColorStateboxes[CHOOSEABLE_COLORS_NUM] = { };
 
 //Design Colors
-EggStatebox designColorStateboxes[CHOOSEABLE_COLORS_NUM] = { EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox() };
+EggStatebox designColorStateboxes[CHOOSEABLE_COLORS_NUM] = { };
 
 //Mark Colors
-EggStatebox markColorStateboxes[CHOOSEABLE_COLORS_NUM] = { EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox(), EggStatebox() };
+EggStatebox markColorStateboxes[CHOOSEABLE_COLORS_NUM] = { };
 
 bool AreColorsEqual(Color color1, Color color2);
 
@@ -47,6 +47,8 @@ void EggCreatorInit()
 
 	for (int i = 0; i < EGG_DESIGNS_NUM - 1; i++)
 	{
+		designStateboxes[i] = EggStatebox();
+
 		designStateboxes[i].Background = IconButton_Background;
 		designStateboxes[i].BackgroundNPatchInfo = IconButton_Background_NPatch;
 
@@ -59,6 +61,8 @@ void EggCreatorInit()
 
 	for (int i = 0; i < EGG_MARKS_NUM - 1; i++)
 	{
+		markStateboxes[i] = EggStatebox();
+
 		markStateboxes[i].Background = IconButton_Background;
 		markStateboxes[i].BackgroundNPatchInfo = IconButton_Background_NPatch;
 
@@ -69,9 +73,13 @@ void EggCreatorInit()
 		markStateboxes[i].BoxEgg.baseColor = WHITE;
 	}
 
+	Color colors[CHOOSEABLE_COLORS_NUM] = { RED, BLUE, GREEN, YELLOW, PINK, PURPLE, ORANGE, SKYBLUE, BLACK, WHITE };
+
 	for (int i = 0; i < CHOOSEABLE_COLORS_NUM; i++)
 	{
 		//Base color
+		baseColorStateboxes[i] = EggStatebox();
+
 		baseColorStateboxes[i].Background = IconButton_Background;
 		baseColorStateboxes[i].BackgroundNPatchInfo = IconButton_Background_NPatch;
 
@@ -79,57 +87,34 @@ void EggCreatorInit()
 		baseColorStateboxes[i].BoxEgg.mark = NoEggMark;
 		baseColorStateboxes[i].BoxEgg.designColor = LIGHTGRAY;
 		baseColorStateboxes[i].BoxEgg.markColor = GRAY;
+		baseColorStateboxes[i].BoxEgg.baseColor = colors[i];
 
 		//Design color
+		designColorStateboxes[i] = EggStatebox();
+
 		designColorStateboxes[i].Background = IconButton_Background;
 		designColorStateboxes[i].BackgroundNPatchInfo = IconButton_Background_NPatch;
 
 		designColorStateboxes[i].BoxEgg.design = NoEggDesign;
 		designColorStateboxes[i].BoxEgg.mark = NoEggMark;
+		designColorStateboxes[i].BoxEgg.designColor = colors[i];
 		designColorStateboxes[i].BoxEgg.markColor = GRAY;
 		designColorStateboxes[i].BoxEgg.baseColor = LIGHTGRAY;
 
 		//Mark color
+		markColorStateboxes[i] = EggStatebox();
+
 		markColorStateboxes[i].Background = IconButton_Background;
 		markColorStateboxes[i].BackgroundNPatchInfo = IconButton_Background_NPatch;
 
 		markColorStateboxes[i].BoxEgg.design = NoEggDesign;
 		markColorStateboxes[i].BoxEgg.mark = NoEggMark;
 		markColorStateboxes[i].BoxEgg.designColor = LIGHTGRAY;
+		markColorStateboxes[i].BoxEgg.markColor = colors[i];
 		markColorStateboxes[i].BoxEgg.baseColor = LIGHTGRAY;
 	}
 
-	baseColorStateboxes[0].BoxEgg.baseColor = RED;
-	baseColorStateboxes[1].BoxEgg.baseColor = BLUE;
-	baseColorStateboxes[2].BoxEgg.baseColor = GREEN;
-	baseColorStateboxes[3].BoxEgg.baseColor = YELLOW;
-	baseColorStateboxes[4].BoxEgg.baseColor = PINK;
-	baseColorStateboxes[5].BoxEgg.baseColor = ORANGE;
-	baseColorStateboxes[6].BoxEgg.baseColor = SKYBLUE;
-	baseColorStateboxes[7].BoxEgg.baseColor = BLACK;
-	baseColorStateboxes[8].BoxEgg.baseColor = WHITE;
-
-	designColorStateboxes[0].BoxEgg.designColor = RED;
-	designColorStateboxes[1].BoxEgg.designColor = BLUE;
-	designColorStateboxes[2].BoxEgg.designColor = GREEN;
-	designColorStateboxes[3].BoxEgg.designColor = YELLOW;
-	designColorStateboxes[4].BoxEgg.designColor = PINK;
-	designColorStateboxes[5].BoxEgg.designColor = ORANGE;
-	designColorStateboxes[6].BoxEgg.designColor = SKYBLUE;
-	designColorStateboxes[7].BoxEgg.designColor = BLACK;
-	designColorStateboxes[8].BoxEgg.designColor = WHITE;
-
-	markColorStateboxes[0].BoxEgg.markColor = RED;
-	markColorStateboxes[1].BoxEgg.markColor = BLUE;
-	markColorStateboxes[2].BoxEgg.markColor = GREEN;
-	markColorStateboxes[3].BoxEgg.markColor = YELLOW;
-	markColorStateboxes[4].BoxEgg.markColor = PINK;
-	markColorStateboxes[5].BoxEgg.markColor = ORANGE;
-	markColorStateboxes[6].BoxEgg.markColor = SKYBLUE;
-	markColorStateboxes[7].BoxEgg.markColor = BLACK;
-	markColorStateboxes[8].BoxEgg.markColor = WHITE;
-
-	SetEggIndex(0);
+	SetEggIndex(eggIndex);
 }
 
 void EggCreatorUpdate()

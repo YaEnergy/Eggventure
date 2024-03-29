@@ -371,9 +371,7 @@ void EggHuntDraw()
 	{
 		DrawEgg(Eggs[i], { serverListWidth + channelListWidth + benchEggSize.x * i, (float)screenHeight }, {0, benchEggSize.y}, 0, {0.35f * ratioMultiplier, 0.35f * ratioMultiplier}, {255, 255, 255, 255});
 	}
-
-	DrawFPS(0, 0);
-
+	
 	EndDrawing();
 }
 
