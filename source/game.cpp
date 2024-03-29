@@ -6,6 +6,7 @@
 #include "eggCreator.h"
 #include "eggHunt.h"
 #include "game.h"
+#include "elements/FadeScreen.h"
 
 #include "assets.h"
 #include "Eggventure.h"
@@ -15,11 +16,14 @@ Camera2D MainCamera = { {0, 0}, {0, 0}, 0, 1 };
 GameState State = Intro;
 TextButton startButton = TextButton();
 
+bool hasStarted = false;
+
 float deltaRotatePolygonDonutTime = 0.0f;
 float polygonDonutRotateDeg = 20.0f;
 
 float eggHidingCutsceneTime = 0.0f;
 bool eggsHidden = false;
+bool hasHidingCutsceneEnded = false;
 
 void IntroInit();
 void IntroUpdate();
@@ -50,6 +54,11 @@ void GameInit()
 
 void GameUpdate()
 {
+	float deltaTime = GetFrameTime();
+	UpdateFadeScreen(deltaTime);
+
+	BeginDrawing();
+
 	switch (State)
 	{
 		case Intro:
@@ -75,6 +84,10 @@ void GameUpdate()
 		default:
 			break;
 	}
+
+	DrawFadeScreen();
+
+	EndDrawing();
 }
 
 void SetGameState(GameState state)
@@ -108,10 +121,12 @@ void IntroUpdate()
 
 	startButton.UpdateButton(MainCamera);
 
-	if (startButton.Released)
+	if (startButton.Released && !hasStarted)
 	{
 		PlaySound(SFX_Start);
-		SetGameState(EggCreation);
+		
+		FadeScreenIn(1.0f, BLACK);
+		hasStarted = true;
 	}
 
 	//rotating polygon donut
@@ -130,12 +145,16 @@ void IntroUpdate()
 	}
 
 	UpdateMusicStream(Music_Main);
+
+	if (hasStarted && HasFadeFinished())
+	{
+		SetGameState(EggCreation);
+		FadeScreenOut(1.0f, BLACK);
+	}
 }
 
 void IntroDraw()
 {
-	BeginDrawing();
-
 	ClearBackground(BLACK);
 
 	int screenWidth = GetScreenWidth();
@@ -213,8 +232,6 @@ void IntroDraw()
 	startButton.Draw();
 
 	DrawTexture(PolygonDonutTexture, { screenWidth - PolygonDonutTexture.width / 2.0f - 120 * ratioMultiplier, screenHeight / 2.0f }, { PolygonDonutTexture.width / 2.0f, PolygonDonutTexture.height / 2.0f }, polygonDonutRotateDeg, { 1.0f, 1.0f }, WHITE, false, false);
-
-	EndDrawing();
 }
 
 void HidingUpdate()
@@ -242,7 +259,16 @@ void HidingUpdate()
 	//Cutscene ends after 5 seconds
 	if (eggHidingCutsceneTime >= 5.0F)
 	{
-		SetGameState(EggHunt);
+		if (!hasHidingCutsceneEnded)
+		{
+			hasHidingCutsceneEnded = true;
+			FadeScreenIn(1.0f, BLACK);
+		}
+		else if (hasHidingCutsceneEnded && HasFadeFinished())
+		{
+			SetGameState(EggHunt);
+			FadeScreenOut(1.0f, BLACK);
+		}
 	}
 
 	//Music
@@ -256,8 +282,6 @@ void HidingUpdate()
 
 void HidingDraw()
 {
-	BeginDrawing();
-
 	ClearBackground(BLACK);
 
 	int screenWidth = GetScreenWidth();
@@ -285,8 +309,6 @@ void HidingDraw()
 
 	//Polygon donut
 	DrawTexture(PolygonDonutTexture, { screenWidth / 2.0f, screenHeight / 2.0f + titleFontSize + 10 * ratioMultiplier }, { PolygonDonutTexture.width / 2.0f, PolygonDonutTexture.height / 2.0f }, polygonDonutRotateDeg, { 1.0f, 1.0f }, WHITE, false, false);
-
-	EndDrawing();
 }
 
 void WinUpdate()
@@ -312,8 +334,6 @@ void WinUpdate()
 
 void WinDraw()
 {
-	BeginDrawing();
-
 	ClearBackground(BLACK);
 
 	int screenWidth = GetScreenWidth();
@@ -353,6 +373,4 @@ void WinDraw()
 	SetTextLineSpacing((int)(creditsFontSize + 5 * ratioMultiplier));
 
 	DrawTextEx(MainFont, creditsText, { 10 * ratioMultiplier, screenHeight - creditsFontSize * 4 - 30 * ratioMultiplier }, creditsFontSize, creditsFontSize / 10, WHITE);
-
-	EndDrawing();
 }

@@ -333,8 +333,6 @@ void SetEggMarkColor(Color color)
 
 void EggCreatorDraw()
 {
-	BeginDrawing();
-
 	ClearBackground(BLACK);
 
 	int screenWidth = GetScreenWidth();
@@ -407,6 +405,4 @@ void EggCreatorDraw()
 	float eggNumFontSize = 24 * ratioMultiplier;
 	Vector2 eggNumSize = MeasureTextEx(MainFont, eggNumText, eggNumFontSize, eggNumFontSize / 10);
 	DrawTextEx(MainFont, eggNumText, { (screenWidth - eggNumSize.x) / 2, titleFontSize / 2 + titleSize.y }, eggNumFontSize, eggNumFontSize / 10, WHITE);
-
-	EndDrawing();
 }

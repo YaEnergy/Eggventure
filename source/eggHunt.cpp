@@ -6,6 +6,7 @@
 #include "Eggventure.h"
 #include "elements/TextButton.h"
 #include "elements/UIUtils.h"
+#include "elements/FadeScreen.h"
 
 const float BASE_FONT_SIZE = 16.0f;
 
@@ -32,6 +33,8 @@ float bunnySpeed = 75.0f;
 
 int bunnyClicksLeft = 5;
 float deltaBunnyClickTime = 0.0f;
+
+bool hasEggHuntEnded = false;
 
 DiscordChannel currentChannel = DISCORD_CHANNEL_GENARAL;
 
@@ -111,7 +114,7 @@ void EggHuntUpdate()
 	Vector2 eggSize = MeasureEgg(eggScale);
 
 	// bunny egg movement
-	if (numFoundEggs == NUM_EGGS - 1 && currentChannel == eggChannel)
+	if (numFoundEggs >= NUM_EGGS - 1 && currentChannel == eggChannel)
 	{
 		float deltaTime = GetFrameTime();
 
@@ -178,7 +181,7 @@ void EggHuntUpdate()
 	}
 
 	//Check if egg is clicked and found, (or bunny if they exist)
-	if ((IsEggHovered() || (IsBunnyHovered() && numFoundEggs == NUM_EGGS - 1 && bunnyClicksLeft > 0)) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && currentChannel == eggChannel)
+	if ((IsEggHovered() || (IsBunnyHovered() && numFoundEggs == NUM_EGGS - 1 && bunnyClicksLeft > 0)) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && currentChannel == eggChannel && numFoundEggs < NUM_EGGS)
 	{
 		if (numFoundEggs == NUM_EGGS - 1 && bunnyClicksLeft > 0)
 		{
@@ -219,11 +222,19 @@ void EggHuntUpdate()
 		UpdateMusicStream(Music_Bunny);
 	}
 
-	//If all eggs have been found
-	if (numFoundEggs == NUM_EGGS)
+	//If all eggs have been found, fade to win scene
+	if (numFoundEggs == NUM_EGGS && !hasEggHuntEnded)
 	{
 		PlaySound(SFX_Win);
+
+		hasEggHuntEnded = true;
+
+		FadeScreenIn(1.0f, BLACK);
+	}
+	else if (hasEggHuntEnded && HasFadeFinished())
+	{
 		SetGameState(Win);
+		FadeScreenOut(1.0f, BLACK);
 	}
 }
 
@@ -279,8 +290,6 @@ void RandomHideEgg()
 
 void EggHuntDraw()
 {
-	BeginDrawing();
-
 	ClearBackground(WHITE);
 
 	int screenWidth = GetScreenWidth();
@@ -341,19 +350,23 @@ void EggHuntDraw()
 	Texture2D backgroundTexture = GetChannelBackgroundTexture(currentChannel);
 	DrawTexture(backgroundTexture, { serverListWidth + channelListWidth, barHeight }, { 0, 0 }, 0, { 1, 1 }, WHITE, false, false);
 
-	//Egg with bunny sometimes idk
+	//Egg with bunny sometimes idk, also only draw egg in correct channel
 	if (currentChannel == eggChannel)
 	{
-		Vector2 eggScale = { 0.25f * ratioMultiplier, 0.25f * ratioMultiplier };
-		Vector2 eggSize = MeasureEgg(eggScale);
+		//only draw egg if not all eggs have been found yet
+		if (numFoundEggs != NUM_EGGS)
+		{
+			Vector2 eggScale = { 0.25f * ratioMultiplier, 0.25f * ratioMultiplier };
+			Vector2 eggSize = MeasureEgg(eggScale);
 
-		bool isEggHovered = IsEggHovered();
-		Color eggTint = numFoundEggs == NUM_EGGS - 1 ? (isEggHovered ? WHITE : LIGHTGRAY) : ColorAlpha(WHITE, isEggHovered ? 1.0f : 0.15f);
+			bool isEggHovered = IsEggHovered();
+			Color eggTint = numFoundEggs == NUM_EGGS - 1 ? (isEggHovered ? WHITE : LIGHTGRAY) : ColorAlpha(WHITE, isEggHovered ? 1.0f : 0.15f);
 
-		DrawEgg(Eggs[numFoundEggs], eggPosition, {eggSize.x / 2, eggSize.y / 2}, 0, eggScale, eggTint);
+			DrawEgg(Eggs[numFoundEggs], eggPosition, {eggSize.x / 2, eggSize.y / 2}, 0, eggScale, eggTint);
+		}
 
 		//Last egg gets taken by fast bunny!!!
-		if (numFoundEggs == NUM_EGGS - 1)
+		if (numFoundEggs >= NUM_EGGS - 1)
 		{
 			float angle = -acosf(bunnyVelocity.x / bunnySpeed);
 
@@ -371,8 +384,6 @@ void EggHuntDraw()
 	{
 		DrawEgg(Eggs[i], { serverListWidth + channelListWidth + benchEggSize.x * i, (float)screenHeight }, {0, benchEggSize.y}, 0, {0.35f * ratioMultiplier, 0.35f * ratioMultiplier}, {255, 255, 255, 255});
 	}
-	
-	EndDrawing();
 }
 
 const char* GetChannelName(DiscordChannel channel)
