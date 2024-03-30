@@ -45,6 +45,7 @@ bool IsBunnyHovered();
 void ChangeChannel(DiscordChannel channel);
 void RandomHideEgg();
 const char* GetChannelName(DiscordChannel channel);
+const char* GetChannelNameTag(DiscordChannel channel);
 Texture2D GetChannelBackgroundTexture(DiscordChannel channel);
 
 void EggHuntInit()
@@ -61,7 +62,7 @@ void EggHuntInit()
 	{
 		channelButtons[i].FontSize = channelTextSize;
 		channelButtons[i].TextFont = MainFont;
-		channelButtons[i].Text = GetChannelName((DiscordChannel)i); //add hashtag infront of here
+		channelButtons[i].Text = GetChannelNameTag((DiscordChannel)i); //add hashtag infront of here
 		channelButtons[i].Background = SquareTexture;
 		channelButtons[i].BackgroundNPatchInfo = { 0, 0, 0, 0, NPATCH_NINE_PATCH };
 		channelButtons[i].BackgroundTint = BLANK;
@@ -402,6 +403,26 @@ const char* GetChannelName(DiscordChannel channel)
 			return "the-bus";
 		default:
 			return "illegal-channel-lol";
+	}
+}
+
+//I know I probably shouldn't be doing this, but I need to get this finished before the polyjam ends and I don't know how to copy char* without causing issues
+const char* GetChannelNameTag(DiscordChannel channel)
+{
+	switch (channel)
+	{
+		case DISCORD_CHANNEL_GENARAL:
+			return "#genaral";
+		case DISCORD_CHANNEL_GENERAL_2:
+			return "#general-2";
+		case DISCORD_CHANNEL_FISHING_LAKE:
+			return "#fishing-lake";
+		case DISCORD_CHANNEL_STOCK_MARKET_BOAT:
+			return "#stock-market-boat";
+		case DISCORD_CHANNEL_THE_BUS:
+			return "#the-bus";
+		default:
+			return "#illegal-channel-lol";
 	}
 }
 

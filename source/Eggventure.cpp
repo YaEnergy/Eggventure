@@ -18,6 +18,8 @@ const char* WINDOW_TITLE = "Polugo n donute's Eggventure!";
 const int DESIGN_WIDTH = 800;
 const int DESIGN_HEIGHT = 480;
 
+float gamePassedTime = 0.0f;
+
 #ifdef WIN32RELEASE
 
 //I love dumb work arounds! (me no like console window on windows...)
@@ -42,7 +44,6 @@ int main()
 	Image icon = LoadImage("assets/Icon.png");
 
 	SetWindowIcon(icon);
-
 
 	LoadAssets();
 
@@ -75,6 +76,10 @@ int main()
 
 void UpdateDrawFrame()
 {
+	gamePassedTime += GetFrameTime();
+
+	SetMasterVolume(gamePassedTime <= 4.0f ? gamePassedTime / 4.0f : 1.0f);
+
 	GameUpdate();
 }
 
