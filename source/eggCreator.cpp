@@ -213,34 +213,40 @@ void EggCreatorUpdate()
 	}
 
 	//Egg design colors
-	for (int i = 0; i < CHOOSEABLE_COLORS_NUM; i++)
+	if (Eggs[eggIndex].design != NoEggDesign)
 	{
-		designColorStateboxes[i].EggScale = editorEggScale;
-		designColorStateboxes[i].Rect = { screenWidth - 5 * ratioMultiplier - (boxWidth + 5 * ratioMultiplier) * (i + 1), screenHeight - eggEditorHeight + 15 * ratioMultiplier, boxWidth, boxHeight };
-
-		designColorStateboxes[i].UpdateButton(MainCamera);
-		designColorStateboxes[i].UpdateStatebox(MainCamera);
-
-		if (designColorStateboxes[i].Released)
+		for (int i = 0; i < CHOOSEABLE_COLORS_NUM; i++)
 		{
-			PlaySound(SFX_EggEditorSelect);
-			SetEggDesignColor(designColorStateboxes[i].State ? designColorStateboxes[i].BoxEgg.designColor : LIGHTGRAY);
+			designColorStateboxes[i].EggScale = editorEggScale;
+			designColorStateboxes[i].Rect = { screenWidth - 5 * ratioMultiplier - (boxWidth + 5 * ratioMultiplier) * (i + 1), screenHeight - eggEditorHeight + 15 * ratioMultiplier, boxWidth, boxHeight };
+
+			designColorStateboxes[i].UpdateButton(MainCamera);
+			designColorStateboxes[i].UpdateStatebox(MainCamera);
+
+			if (designColorStateboxes[i].Released)
+			{
+				PlaySound(SFX_EggEditorSelect);
+				SetEggDesignColor(designColorStateboxes[i].State ? designColorStateboxes[i].BoxEgg.designColor : LIGHTGRAY);
+			}
 		}
 	}
 
 	//Egg mark colors
-	for (int i = 0; i < CHOOSEABLE_COLORS_NUM; i++)
+	if (Eggs[eggIndex].mark != NoEggMark)
 	{
-		markColorStateboxes[i].EggScale = editorEggScale;
-		markColorStateboxes[i].Rect = { screenWidth - 5 * ratioMultiplier - (boxWidth + 5 * ratioMultiplier) * (i + 1), screenHeight - eggEditorHeight + boxHeight + 25 * ratioMultiplier, boxWidth, boxHeight };
-
-		markColorStateboxes[i].UpdateButton(MainCamera);
-		markColorStateboxes[i].UpdateStatebox(MainCamera);
-
-		if (markColorStateboxes[i].Released)
+		for (int i = 0; i < CHOOSEABLE_COLORS_NUM; i++)
 		{
-			PlaySound(SFX_EggEditorSelect);
-			SetEggMarkColor(markColorStateboxes[i].State ? markColorStateboxes[i].BoxEgg.markColor : GRAY);
+			markColorStateboxes[i].EggScale = editorEggScale;
+			markColorStateboxes[i].Rect = { screenWidth - 5 * ratioMultiplier - (boxWidth + 5 * ratioMultiplier) * (i + 1), screenHeight - eggEditorHeight + boxHeight + 25 * ratioMultiplier, boxWidth, boxHeight };
+
+			markColorStateboxes[i].UpdateButton(MainCamera);
+			markColorStateboxes[i].UpdateStatebox(MainCamera);
+
+			if (markColorStateboxes[i].Released)
+			{
+				PlaySound(SFX_EggEditorSelect);
+				SetEggMarkColor(markColorStateboxes[i].State ? markColorStateboxes[i].BoxEgg.markColor : GRAY);
+			}
 		}
 	}
 
