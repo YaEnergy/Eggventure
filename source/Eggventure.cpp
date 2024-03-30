@@ -6,10 +6,8 @@
 #include "raylib.h"
 #include "assets.h"
 
-//#define PLATFORM_WEB
-
 #if defined(PLATFORM_WEB)
-	//#include <emscripten/emscripten.h>
+	#include <emscripten/emscripten.h>
 #endif
 
 
@@ -37,8 +35,7 @@ int main()
 	// Init
 	InitWindow(DESIGN_WIDTH, DESIGN_HEIGHT, WINDOW_TITLE);
 	InitAudioDevice();
-
-
+	
 	SetWindowState(FLAG_WINDOW_ALWAYS_RUN);
 
 	Image icon = LoadImage("assets/Icon.png");

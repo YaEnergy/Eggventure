@@ -12,7 +12,7 @@ class Statebox : public Button
 
 		Statebox()
 		{
-			Rect = { NULL, NULL, NULL, NULL };
+			Rect = { 0, 0, 1, 1 };
 			State = false;
 		}
 

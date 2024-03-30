@@ -394,3 +394,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# contains stuff that shouldn't be on github lol (web build folder)
+Source/build

@@ -48,12 +48,12 @@ if (WIN32)
         add_executable (Eggventure "Eggventure.cpp" "Eggventure.h")
     endif()
 else()
+    # Add source to this project's executable.
+    add_executable (Eggventure "Eggventure.cpp" "Eggventure.h")
+
     # if config is not debug set the variable to "-mwindows" else nothing
     set(SUBSYSTEM_LINKER_OPTIONS "$<IF:$<NOT:$<CONFIG:Debug>>,-mwindows,>")
     target_link_options(Eggventure PRIVATE ${SUBSYSTEM_LINKER_OPTIONS})
-
-    # Add source to this project's executable.
-    add_executable (Eggventure "Eggventure.cpp" "Eggventure.h")
 endif()
 
 
@@ -89,7 +89,9 @@ target_sources(${PROJECT_NAME} PRIVATE
 #    set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".html")
 #endif()
 
-if (${PLATFORM} STREQUAL "Web")
+if (${PLATFORM} MATCHES "Web")
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "--preload-file ./assets")
+
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY -s GL_ENABLE_GET_PROC_ADDRESS=1")
     set(CMAKE_EXECUTABLE_SUFFIX ".html") # This line is used to set your executable to build with the emscripten html template so that you can directly open it.
 endif ()

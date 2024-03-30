@@ -56,7 +56,7 @@ Music Music_Bunny = { 0 };
 void LoadAssets()
 {
 	//Main
-	MainFont = LoadFontEx("assets/Qikki-Reg/Qarmic_sans_Abridged.ttf", 128, NULL, NULL);
+	MainFont = LoadFontEx("assets/Qikki-Reg/Qarmic_sans_Abridged.ttf", 128, 0, 0);
 
 	SquareImage = GenImageColor(1, 1, WHITE);
 	SquareTexture = LoadTextureFromImage(SquareImage);
