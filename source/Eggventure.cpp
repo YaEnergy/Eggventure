@@ -36,6 +36,7 @@ int main()
 	InitWindow(DESIGN_WIDTH, DESIGN_HEIGHT, WINDOW_TITLE);
 	InitAudioDevice();
 	
+	SetWindowMinSize(DESIGN_WIDTH / 2, DESIGN_HEIGHT / 2);
 	SetWindowState(FLAG_WINDOW_ALWAYS_RUN | FLAG_WINDOW_RESIZABLE);
 
 	Image icon = LoadImage("assets/Icon.png");
