@@ -36,7 +36,7 @@ int main()
 	InitWindow(DESIGN_WIDTH, DESIGN_HEIGHT, WINDOW_TITLE);
 	InitAudioDevice();
 	
-	SetWindowState(FLAG_WINDOW_ALWAYS_RUN);
+	SetWindowState(FLAG_WINDOW_ALWAYS_RUN | FLAG_WINDOW_RESIZABLE);
 
 	Image icon = LoadImage("assets/Icon.png");
 
@@ -57,16 +57,17 @@ int main()
 	{
 		UpdateDrawFrame();
 	}
-
-	//Deinit
-	CloseWindow();
 #endif
 
-	CloseAudioDevice();
+	//Deinit
 
 	UnloadImage(icon);
 
 	UnloadAssets();
+
+	CloseAudioDevice();
+
+	CloseWindow();
 
 	return 0;
 }

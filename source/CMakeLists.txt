@@ -9,7 +9,7 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-project ("Eggventure" VERSION 1.0.0)
+project ("Eggventure" VERSION 1.0.1)
 
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -77,7 +77,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "elements/FadeScreen.cpp" 
     "elements/Button.cpp" 
     "elements/TextButton.cpp" 
-    "elements/Statebox.cpp" 
+    "elements/StateBox.cpp" 
     "elements/UIUtils.cpp" 
     "EggStatebox.cpp"
     "eggHunt.cpp"

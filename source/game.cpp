@@ -181,6 +181,10 @@ void IntroDraw()
 	//TODO: there has to be a better way for doing this... eh too lazy to change it now though
 	//could've just set the line spacing, because I didn't know that function existed, if I ever need to make a change here I'll use that instead
 	//but prob won't need to anymore
+
+	//Kiara 11/07/2024: I mean it's already here and I only need to change one line
+	//This code is awful
+
 	const char* introductionText1 = "Polugo n donute has forgor";
 	const char* introductionText2 = "to make hideable eggs";
 	const char* introductionText3 = "for their event and needs";
@@ -188,7 +192,7 @@ void IntroDraw()
 	const char* introductionText5 = "single one of them!!!:)";
 	const char* introductionText6 = "afterwards he will hide";
 	const char* introductionText7 = "them and you'll participate";
-	const char* introductionText8 = "in their event!! :3";
+	const char* introductionText8 = "in her event!! :3";
 	const char* introductionText9 = "(watch out for bunnies!)";
 
 	DrawTextEx(MainFont, introductionText1, { introductionX, introductionY }, introductionFontSize, introductionFontSize / 10, WHITE);
@@ -231,7 +235,9 @@ void IntroDraw()
 	//Start button
 	startButton.Draw();
 
-	DrawTexture(PolygonDonutTexture, { screenWidth - PolygonDonutTexture.width / 2.0f - 120 * ratioMultiplier, screenHeight / 2.0f }, { PolygonDonutTexture.width / 2.0f, PolygonDonutTexture.height / 2.0f }, polygonDonutRotateDeg, { 1.0f, 1.0f }, WHITE, false, false);
+	float polygonDonutScale = std::min((screenWidth - MeasureTextEx(MainFont, introductionText7, introductionFontSize, introductionFontSize / 10.0f).x - introductionX - 120 * ratioMultiplier) / (float)PolygonDonutTexture.width, (screenHeight - titleFontSize * 3.0f / 2.0f - (screenHeight - startButton.Rect.y)) / (float)PolygonDonutTexture.height);
+
+	DrawTexture(PolygonDonutTexture, { screenWidth - PolygonDonutTexture.width * polygonDonutScale / 2.0f - 120 * ratioMultiplier, screenHeight / 2.0f }, { PolygonDonutTexture.width * polygonDonutScale / 2.0f, PolygonDonutTexture.height * polygonDonutScale / 2.0f }, polygonDonutRotateDeg, { polygonDonutScale, polygonDonutScale }, WHITE, false, false);
 }
 
 void HidingUpdate()
@@ -308,7 +314,9 @@ void HidingDraw()
 	DrawTextEx(MainFont, titleText, { (screenWidth - titleSize.x) / 2, titleFontSize }, titleFontSize, titleFontSize / 10, WHITE);
 
 	//Polygon donut
-	DrawTexture(PolygonDonutTexture, { screenWidth / 2.0f, screenHeight / 2.0f + titleFontSize + 10 * ratioMultiplier }, { PolygonDonutTexture.width / 2.0f, PolygonDonutTexture.height / 2.0f }, polygonDonutRotateDeg, { 1.0f, 1.0f }, WHITE, false, false);
+	float polygonDonutScale = std::min((screenWidth / 2.0f - 120 * ratioMultiplier) / (float)PolygonDonutTexture.width, (screenHeight - titleFontSize * 3.0f / 2.0f - 70 * ratioMultiplier) / (float)PolygonDonutTexture.height);
+
+	DrawTexture(PolygonDonutTexture, Vector2{ screenWidth / 2.0f, screenHeight / 2.0f + titleFontSize + 10 * ratioMultiplier }, Vector2{ PolygonDonutTexture.width * polygonDonutScale / 2.0f, PolygonDonutTexture.height * polygonDonutScale / 2.0f }, polygonDonutRotateDeg, Vector2{ polygonDonutScale, polygonDonutScale }, WHITE, false, false);
 }
 
 void WinUpdate()
@@ -341,18 +349,21 @@ void WinDraw()
 
 	float ratioMultiplier = GetScreenDesignRatioMultiplier();
 
+	float titleFontSize = 56 * ratioMultiplier;
+
 	//Background
 	Rectangle screenRect = { 0, 0, (float)screenWidth, (float)screenHeight };
 
 	DrawRectangleGradientEx(screenRect, GREEN, DARKGREEN, DARKGREEN, GREEN);
 
 	//Polygon donut
-	DrawTexture(PolygonDonutTexture, { screenWidth / 2.0f, screenHeight / 2.0f + 66 * ratioMultiplier }, { PolygonDonutTexture.width / 2.0f, PolygonDonutTexture.height / 2.0f }, polygonDonutRotateDeg, { 1.0f, 1.0f }, WHITE, false, false);
+	float polygonDonutScale = std::min((screenWidth / 2.0f - 120 * ratioMultiplier) / (float)PolygonDonutTexture.width, (screenHeight - titleFontSize * 3.0f / 2.0f - 70 * ratioMultiplier) / (float)PolygonDonutTexture.height);
+
+	DrawTexture(PolygonDonutTexture, Vector2{ screenWidth / 2.0f, screenHeight / 2.0f + titleFontSize + 10 * ratioMultiplier }, Vector2{ PolygonDonutTexture.width * polygonDonutScale / 2.0f, PolygonDonutTexture.height * polygonDonutScale / 2.0f }, polygonDonutRotateDeg, Vector2{ polygonDonutScale, polygonDonutScale }, WHITE, false, false);
 
 	//Cutscene title
 	const char* titleText1 = "You found all the eggs!";
 	const char* titleText2 = "Thanks for playing!";
-	float titleFontSize = 56 * ratioMultiplier;
 
 	SetTextLineSpacing((int)(titleFontSize + 15 * ratioMultiplier));
 

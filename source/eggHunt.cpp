@@ -7,10 +7,16 @@
 #include "elements/TextButton.h"
 #include "elements/UIUtils.h"
 #include "elements/FadeScreen.h"
+#include "raymath.h"
+
+#include <cmath>
 
 const float BASE_FONT_SIZE = 16.0f;
 
 const int NUM_CHANNELS = 5;
+
+//this is some awful code, wow
+//now it's even worse!
 
 enum DiscordChannel
 {
@@ -20,6 +26,9 @@ enum DiscordChannel
 	DISCORD_CHANNEL_STOCK_MARKET_BOAT,
 	DISCORD_CHANNEL_THE_BUS,
 };
+
+Vector2 backgroundStartPosition = Vector2{ 0.0f, 0.0f };
+float backgroundScale = 1.0f;
 
 int numFoundEggs = 0;
 Vector2 eggScale = { 0.25f, 0.25f };
@@ -46,7 +55,7 @@ void ChangeChannel(DiscordChannel channel);
 void RandomHideEgg();
 const char* GetChannelName(DiscordChannel channel);
 const char* GetChannelNameTag(DiscordChannel channel);
-Texture2D GetChannelBackgroundTexture(DiscordChannel channel);
+Texture2D& GetChannelBackgroundTexture(DiscordChannel channel);
 
 void EggHuntInit()
 {
@@ -96,6 +105,8 @@ void EggHuntUpdate()
 	float ratioMultiplier = GetScreenDesignRatioMultiplier();
 
 	//mmm i love copying values over, allowing me to make changes and forgetting to make them somewhere else
+	//v1.0.1 edit: why did i do this, whatever
+
 	float barHeight = 50.0f;
 	float serverListWidth = 75.0f;
 	float channelListWidth = 225.0f;
@@ -112,6 +123,16 @@ void EggHuntUpdate()
 		}
 	}
 
+	Texture2D& backgroundTexture = GetChannelBackgroundTexture(currentChannel);
+	float channelWidth = screenWidth - serverListWidth - channelListWidth;
+	float channelHeight = screenHeight - barHeight;
+
+	float channelPaddingX = (channelWidth - (float)backgroundTexture.width * backgroundScale) / 2.0f;
+	float channelPaddingY = (channelHeight - (float)backgroundTexture.height * backgroundScale) / 2.0f;
+
+	backgroundScale = std::min(channelWidth / (float)backgroundTexture.width, channelHeight / (float)backgroundTexture.height);
+	backgroundStartPosition = Vector2{ serverListWidth + channelListWidth + channelPaddingX, barHeight + channelPaddingY };
+
 	Vector2 eggSize = MeasureEgg(eggScale);
 
 	// bunny egg movement
@@ -124,17 +145,19 @@ void EggHuntUpdate()
 		bunnyPosition = { bunnyPosition.x + bunnyVelocity.x * deltaTime, bunnyPosition.y + bunnyVelocity.y * deltaTime };
 
 		//collision stuff here
+		Texture2D& backgroundTexture = GetChannelBackgroundTexture(eggChannel);
+
 		bool isCollidingX = false;
 		float collisionX = 0;
 
-		if (bunnyPosition.x > screenWidth - BunnyTexture.width * bunnyScale.x / 2.0f)
+		if (bunnyPosition.x > (float)backgroundTexture.width - BunnyTexture.width * bunnyScale.x / 2.0f)
 		{
-			collisionX = (screenWidth - BunnyTexture.width * bunnyScale.x / 2.0f);
+			collisionX = (float)backgroundTexture.width - BunnyTexture.width * bunnyScale.x / 2.0f;
 			isCollidingX = true;
 		}
-		else if (bunnyPosition.x < serverListWidth + channelListWidth + BunnyTexture.width * bunnyScale.x / 2.0f)
+		else if (bunnyPosition.x < BunnyTexture.width * bunnyScale.x / 2.0f)
 		{
-			collisionX = serverListWidth + channelListWidth + BunnyTexture.width * bunnyScale.x / 2.0f;
+			collisionX = BunnyTexture.width * bunnyScale.x / 2.0f;
 			isCollidingX = true;
 		}
 
@@ -152,14 +175,14 @@ void EggHuntUpdate()
 		bool isCollidingY = false;
 		float collisionY = 0;
 
-		if (bunnyPosition.y > screenHeight - BunnyTexture.height * bunnyScale.y / 2.0f)
+		if (bunnyPosition.y > (float)backgroundTexture.height - BunnyTexture.height * bunnyScale.y / 2.0f)
 		{
-			collisionY = screenHeight - BunnyTexture.height * bunnyScale.y / 2.0f;
+			collisionY = (float)backgroundTexture.height - BunnyTexture.height * bunnyScale.y / 2.0f;
 			isCollidingY = true;
 		}
-		else if (bunnyPosition.y < barHeight + BunnyTexture.width * bunnyScale.x / 2.0f)
+		else if (bunnyPosition.y < BunnyTexture.width * bunnyScale.x / 2.0f)
 		{
-			collisionY = barHeight + BunnyTexture.width * bunnyScale.x / 2.0f;
+			collisionY = BunnyTexture.width * bunnyScale.x / 2.0f;
 			isCollidingY = true;
 		}
 
@@ -199,7 +222,9 @@ void EggHuntUpdate()
 		{
 			numFoundEggs++;
 			PlaySound(SFX_EggCollect);
-			RandomHideEgg();
+
+			if (numFoundEggs != NUM_EGGS)
+				RandomHideEgg();
 		}
 	}
 
@@ -241,13 +266,20 @@ void EggHuntUpdate()
 
 bool IsEggHovered()
 {
-	Vector2 eggSize = MeasureEgg(eggScale);
-	return IsRectHovered({ eggPosition.x - eggSize.x / 2, eggPosition.y - eggSize.y / 2,  eggSize.x, eggSize.y }, MainCamera);
+	//egg and bunny also scaled by the background scale
+
+	Vector2 trueEggPos = Vector2Add(Vector2Scale(eggPosition, backgroundScale), backgroundStartPosition);
+	Vector2 eggSize = MeasureEgg(Vector2Scale(eggScale, backgroundScale));
+	return IsRectHovered({ trueEggPos.x - eggSize.x / 2, trueEggPos.y - eggSize.y / 2,  eggSize.x, eggSize.y }, MainCamera);
 }
 
 bool IsBunnyHovered()
 {
-	return IsRectHovered({ bunnyPosition.x - BunnyTexture.width * bunnyScale.x / 2, bunnyPosition.y - BunnyTexture.height * bunnyScale.y / 2, BunnyTexture.width * bunnyScale.x, BunnyTexture.height * bunnyScale.y }, MainCamera);
+	//egg and bunny also scaled by the background scale
+
+	Vector2 truePos = Vector2Add(Vector2Scale(bunnyPosition, backgroundScale), backgroundStartPosition);
+	Vector2 trueScale = Vector2Scale(bunnyScale, backgroundScale);
+	return IsRectHovered({ truePos.x - BunnyTexture.width * trueScale.x / 2, truePos.y - BunnyTexture.height * trueScale.y / 2, BunnyTexture.width * trueScale.x, BunnyTexture.height * trueScale.y }, MainCamera);
 }
 
 void ChangeChannel(DiscordChannel channel)
@@ -263,22 +295,6 @@ void ChangeChannel(DiscordChannel channel)
 
 void RandomHideEgg()
 {
-	int screenWidth = GetScreenWidth();
-	int screenHeight = GetScreenHeight();
-
-	float ratioMultiplier = GetScreenDesignRatioMultiplier();
-
-	//mmm i love copying values over, allowing me to make changes and forgetting to make them somewhere else
-	float barHeight = 50.0f;
-	float serverListWidth = 75.0f;
-	float channelListWidth = 225.0f;
-
-	Vector2 eggSize = MeasureEgg(eggScale);
-	Vector2 benchEggSize = MeasureEgg({ 0.35f * ratioMultiplier, 0.35f * ratioMultiplier });
-
-	eggPosition = { (float)GetRandomValue((int)(serverListWidth + channelListWidth + eggSize.x / 2.0f), (int)((float)screenWidth - eggSize.x / 2.0f)), (float)GetRandomValue((int)(barHeight) + eggSize.y / 2, (int)((float)screenHeight - eggSize.y / 2.0f - benchEggSize.y)) };
-	bunnyPosition = eggPosition;
-
 	//Random channel, just not the current egg channel
 
 	DiscordChannel oldChannel = eggChannel;
@@ -287,6 +303,14 @@ void RandomHideEgg()
 	{
 		eggChannel = (DiscordChannel)GetRandomValue(0, NUM_CHANNELS - 1);
 	}
+
+	Vector2 eggSize = MeasureEgg(Vector2{0.25f, 0.25f});
+	Vector2 benchEggSize = MeasureEgg({ 0.35f, 0.35f });
+
+	Texture2D& backgroundTexture = GetChannelBackgroundTexture(eggChannel);
+
+	eggPosition = { (float)GetRandomValue((int)(eggSize.x / 2.0f), (int)((float)backgroundTexture.width - eggSize.x / 2.0f)), (float)GetRandomValue((int)(eggSize.y / 2.0f), (int)((float)backgroundTexture.height - eggSize.y / 2.0f)) };
+	bunnyPosition = eggPosition;
 }
 
 void EggHuntDraw()
@@ -348,22 +372,29 @@ void EggHuntDraw()
 	DrawTextEx(MainFont, channelName, { serverListWidth + channelListWidth + channelIconSize.x + 15, barHeight / 2 - channelNameFontSize / 2 }, channelNameFontSize, channelNameFontSize / 10, WHITE);
 
 	//Channel background
-	Texture2D backgroundTexture = GetChannelBackgroundTexture(currentChannel);
-	DrawTexture(backgroundTexture, { serverListWidth + channelListWidth, barHeight }, { 0, 0 }, 0, { 1, 1 }, WHITE, false, false);
+	float channelWidth = screenWidth - serverListWidth - channelListWidth;
+	float channelHeight = screenHeight - barHeight;
 
+	DrawRectangleRec(Rectangle{ serverListWidth + channelListWidth, barHeight, channelWidth, channelHeight }, Color{50, 50, 55, 255});
+	
+	Texture2D& backgroundTexture = GetChannelBackgroundTexture(currentChannel);
+
+	DrawTexture(backgroundTexture, backgroundStartPosition, Vector2{ 0.0f, 0.0f }, 0.0f, Vector2{backgroundScale, backgroundScale}, WHITE, false, false);
+
+	//egg and bunny also scaled by the background scale
+	
 	//Egg with bunny sometimes idk, also only draw egg in correct channel
 	if (currentChannel == eggChannel)
 	{
 		//only draw egg if not all eggs have been found yet
 		if (numFoundEggs != NUM_EGGS)
 		{
-			Vector2 eggScale = { 0.25f * ratioMultiplier, 0.25f * ratioMultiplier };
-			Vector2 eggSize = MeasureEgg(eggScale);
+			Vector2 eggSize = MeasureEgg(Vector2Scale(eggScale, backgroundScale));
 
 			bool isEggHovered = IsEggHovered();
 			Color eggTint = numFoundEggs == NUM_EGGS - 1 ? (isEggHovered ? WHITE : LIGHTGRAY) : ColorAlpha(WHITE, isEggHovered ? 1.0f : 0.15f);
 
-			DrawEgg(Eggs[numFoundEggs], eggPosition, {eggSize.x / 2, eggSize.y / 2}, 0, eggScale, eggTint);
+			DrawEgg(Eggs[numFoundEggs], Vector2Add(Vector2Scale(eggPosition, backgroundScale), backgroundStartPosition), {eggSize.x / 2, eggSize.y / 2}, 0, Vector2Scale(eggScale, backgroundScale), eggTint);
 		}
 
 		//Last egg gets taken by fast bunny!!!
@@ -374,7 +405,8 @@ void EggHuntDraw()
 			if (bunnyVelocity.y < 0)
 				angle *= -1;
 
-			DrawTexture(BunnyTexture, bunnyPosition, { BunnyTexture.width * bunnyScale.x / 2.0f,  BunnyTexture.height * bunnyScale.y / 2.0f }, 90 - angle * RAD2DEG, bunnyScale, deltaBunnyClickTime < 0.25f ? SKYBLUE : (IsBunnyHovered() ? LIGHTGRAY : WHITE), false, false);
+			Vector2 trueBunnyScale = Vector2Scale(bunnyScale, backgroundScale);
+			DrawTexture(BunnyTexture, Vector2Add(Vector2Scale(bunnyPosition, backgroundScale), backgroundStartPosition), { BunnyTexture.width * trueBunnyScale.x / 2.0f,  BunnyTexture.height * trueBunnyScale.y / 2.0f }, 90 - angle * RAD2DEG, trueBunnyScale, deltaBunnyClickTime < 0.25f ? SKYBLUE : (IsBunnyHovered() ? LIGHTGRAY : WHITE), false, false);
 		}
 	}
 
@@ -426,7 +458,7 @@ const char* GetChannelNameTag(DiscordChannel channel)
 	}
 }
 
-Texture2D GetChannelBackgroundTexture(DiscordChannel channel)
+Texture2D& GetChannelBackgroundTexture(DiscordChannel channel)
 {
 	switch (channel)
 	{
@@ -441,6 +473,6 @@ Texture2D GetChannelBackgroundTexture(DiscordChannel channel)
 		case DISCORD_CHANNEL_THE_BUS:
 			return Channel_TheBusTexture;
 		default:
-			return { 0 };
+			throw (channel);
 	}
 }
