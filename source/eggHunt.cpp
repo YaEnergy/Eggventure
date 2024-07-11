@@ -295,6 +295,9 @@ void ChangeChannel(DiscordChannel channel)
 
 void RandomHideEgg()
 {
+	float screenHeight = GetScreenHeight();
+	float ratioMultiplier = GetScreenDesignRatioMultiplier();
+
 	//Random channel, just not the current egg channel
 
 	DiscordChannel oldChannel = eggChannel;
@@ -304,12 +307,19 @@ void RandomHideEgg()
 		eggChannel = (DiscordChannel)GetRandomValue(0, NUM_CHANNELS - 1);
 	}
 
-	Vector2 eggSize = MeasureEgg(Vector2{0.25f, 0.25f});
-	Vector2 benchEggSize = MeasureEgg({ 0.35f, 0.35f });
+	Vector2 eggSize = MeasureEgg(eggScale);
+	Vector2 benchEggSize = MeasureEgg({ 0.35f * ratioMultiplier, 0.35f * ratioMultiplier });
 
 	Texture2D& backgroundTexture = GetChannelBackgroundTexture(eggChannel);
 
-	eggPosition = { (float)GetRandomValue((int)(eggSize.x / 2.0f), (int)((float)backgroundTexture.width - eggSize.x / 2.0f)), (float)GetRandomValue((int)(eggSize.y / 2.0f), (int)((float)backgroundTexture.height - eggSize.y / 2.0f)) };
+	Vector2 newEggPosition = { (float)GetRandomValue((int)(eggSize.x / 2.0f), (int)((float)backgroundTexture.width - eggSize.x / 2.0f)), (float)GetRandomValue((int)(eggSize.y / 2.0f), (int)((float)backgroundTexture.height - eggSize.y / 2.0f)) };//{ (float)GetRandomValue((int)(eggSize.x / 2.0f), (int)((float)backgroundTexture.width - eggSize.x / 2.0f)), (float)GetRandomValue((int)(eggSize.y / 2.0f), (int)((float)backgroundTexture.height - eggSize.y / 2.0f)) };
+	
+	//if new egg position (in the channel background space) is under the y-level of the found eggs bench, move the new egg position to just above the found eggs bench
+	//kind of a dirty solution, but it works
+	if (Vector2Add(Vector2Scale(newEggPosition, backgroundScale), backgroundStartPosition).y > (float)screenHeight - benchEggSize.y - MeasureEgg(Vector2Scale(eggScale, backgroundScale)).y / 2.0f)
+		newEggPosition.y = ((float)screenHeight - benchEggSize.y - MeasureEgg(Vector2Scale(eggScale, backgroundScale)).y / 2.0f - backgroundStartPosition.y) / backgroundScale;
+
+	eggPosition = newEggPosition;
 	bunnyPosition = eggPosition;
 }
 
