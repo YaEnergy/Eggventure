@@ -35,25 +35,16 @@ endif()
 
 # Our Project
 
-if (WIN32)
-    if (CMAKE_BUILD_TYPE STREQUAL "Release")
-        #this is to get rid of the console window. Yeah I know, I suck.
+if (WIN32 AND (CMAKE_BUILD_TYPE STREQUAL "Release"))
+    #this is to get rid of the console window. Yeah I know, I suck.
 
-        # Add source to this project's executable.
-        add_executable (Eggventure WIN32 "Eggventure.cpp" "Eggventure.h")
+    # Add source to this project's executable.
+    add_executable (Eggventure WIN32 "Eggventure.cpp" "Eggventure.h")
 
-        add_compile_definitions(WIN32RELEASE)
-    else()
-        # Add source to this project's executable.
-        add_executable (Eggventure "Eggventure.cpp" "Eggventure.h")
-    endif()
+    add_compile_definitions(WIN32RELEASE)
 else()
     # Add source to this project's executable.
     add_executable (Eggventure "Eggventure.cpp" "Eggventure.h")
-
-    # if config is not debug set the variable to "-mwindows" else nothing
-    set(SUBSYSTEM_LINKER_OPTIONS "$<IF:$<NOT:$<CONFIG:Debug>>,-mwindows,>")
-    target_link_options(Eggventure PRIVATE ${SUBSYSTEM_LINKER_OPTIONS})
 endif()
 
 
