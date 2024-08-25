@@ -39,9 +39,15 @@ int main()
 	SetWindowMinSize(DESIGN_WIDTH / 2, DESIGN_HEIGHT / 2);
 	SetWindowState(FLAG_WINDOW_ALWAYS_RUN | FLAG_WINDOW_RESIZABLE);
 
+	//Set working directory to application directory
+	ChangeDirectory(GetApplicationDirectory());
+
 	Image icon = LoadImage("assets/Icon.png");
+	ImageFormat(&icon, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8); //Required for icons
 
 	SetWindowIcon(icon);
+
+	UnloadImage(icon);
 
 	LoadAssets();
 
@@ -62,7 +68,6 @@ int main()
 
 	//Deinit
 
-	UnloadImage(icon);
 
 	UnloadAssets();
 
